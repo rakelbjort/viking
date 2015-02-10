@@ -63,15 +63,8 @@ Viking.prototype.update = function (du) {
     var prevX = this.cx;
     var prevY = this.cy;
 
-    // Check if Viking has cleared out all the hearts
-    if (background_level01.countingHearts() === 0){
-        // Check if the Viking is at the open door
-        if(background_level01.collidesWithWinningDoor(this.cx,this.cy) ===1){
-            // Then the level is done
-            g_main.gameOver();
-        }
-        
-    }
+    // Check if Viking has finished the level
+    this.levelDone();
     
     // Check if Viking is collecting a Heart
     background_level01.collidesWithHeart(this.cx,this.cy);
@@ -79,16 +72,18 @@ Viking.prototype.update = function (du) {
     // Viking goes one cell down if it's not colliding with anything
     if (eatKey(this.GO_DOWN) || eatKey(this.GO_DOWN_S) ){
         if(background_level01.collisionCheckDown(this.cx,this.cy) ===1){
-              this.cy = prevY;}
+              this.cy = prevY;
+          }
         else{
             this.cy += this.currentSprite.height ;
         }
     }
-
     // Viking goes one cell up if it's not colliding with anything
     else if (eatKey(this.GO_UP) || eatKey(this.GO_UP_W)){
-        if(background_level01.collisionCheckUp(this.cx,this.cy) ===1){
-              this.cy = prevY;}
+        if(background_level01.collisionCheckUp(this.cx,this.cy) ===1)  {
+
+            this.cy = prevY;
+        }
         else{
             this.cy -= this.currentSprite.height ;
         }
@@ -98,14 +93,15 @@ Viking.prototype.update = function (du) {
     else if (eatKey(this.GO_LEFT ) || eatKey(this.GO_LEFT_A)){
         this.cx -= this.currentSprite.width;
         if(background_level01.collisionCheckSides(this.cx,this.cy) ===1){
-            this.cx = prevX;}
+            this.cx = prevX;
+        }
     }
-    
     // Viking goes one cell right if it's not colliding with anything
     else if (eatKey(this.GO_RIGHT) || eatKey(this.GO_RIGHT_D) ){
         this.cx += this.currentSprite.width;
         if(background_level01.collisionCheckSides(this.cx,this.cy) ===1){
-            this.cx = prevX;}
+            this.cx = prevX;
+        }
     }
 };
 
@@ -125,7 +121,6 @@ Viking.prototype.render = function (ctx) {
     this.currentSprite.scale = 1;
     this.currentSprite.drawCentredAt(ctx,this.cx,this.cy, this.rotation);
     this.currentSprite.scale = origScale;
-
 };
 
 Viking.prototype.whichSprite = function (){
@@ -136,3 +131,19 @@ Viking.prototype.whichSprite = function (){
     this._animation.Frame +=1;
 
 };
+
+var treasureCollected = false;
+
+Viking.prototype.levelDone = function(){
+    // Viking collected all the hearts
+    if (background_level01.countingHearts() === 0){
+        // Check if the Viking is collecting the treasure
+        if(background_level01.collectTreasure(this.cx,this.cy) ===1){
+            treasureCollected = true
+        }
+        // Check if the Viking has collected all the hearts and is at the OPEN door
+        if(background_level01.goToOpenDoor(this.cx, this.cy)===1 && treasureCollected ===true){
+             g_main.gameOver();
+        }
+    }
+}

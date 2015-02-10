@@ -58,7 +58,39 @@ function createSheep(){
         }
     };
 }
+// Go through the level 2D array and create sheeps where 'o' is
+function createTreasureBox(){
+        for(var bx = 0; bx < background_level01.character.length; bx++) {
+    //First value of matrix designates row so below we multiply by bx
+        for(var by = 0; by < background_level01.character[bx].length; by++) {
+            posx = background_level01.xBase + (background_level01.cellWidth*by);
+            posy = background_level01.yBase + (background_level01.cellHeight*bx);
+            if(background_level01.character[bx][by]=== 'o') {
+                entityManager.generateTreasureBox({
+                    cx : posx,
+                    cy : posy
+                });
+            }
+        }
+    };
+}
 
+// Go through the level 2D array and create sheeps where '=' is
+function createDoor(){
+        for(var bx = 0; bx < background_level01.character.length; bx++) {
+    //First value of matrix designates row so below we multiply by bx
+        for(var by = 0; by < background_level01.character[bx].length; by++) {
+            posx = background_level01.xBase + (background_level01.cellWidth*by);
+            posy = background_level01.yBase + (background_level01.cellHeight*bx);
+            if(background_level01.character[bx][by]=== '=') {
+                entityManager.generateDoor({
+                    cx : posx,
+                    cy : posy
+                });
+            }
+        }
+    };
+}
 function gatherInputs() {
     // Nothing to do here!
     // The event handlers do everything we need for now.
@@ -69,8 +101,8 @@ function gatherInputs() {
 // =================
 
 function updateSimulation(du) {
-    entityManager.update(du);
     background_level01.update(du);
+    entityManager.update(du);
 }
 
 // =================
@@ -85,8 +117,8 @@ function renderGameStatus(){
 
  
 function renderSimulation(ctx) {
-    entityManager.render(ctx);
     background_level01.render(ctx);
+    entityManager.render(ctx);
     renderGameStatus();
 }
  
@@ -117,7 +149,8 @@ function requestPreloads() {
         door : imagesRoot +'door_64_sprite.png',
         tree: imagesRoot +'Tree_64.png',
         sheep: imagesRoot + 'sheep_64_spriteSheet.png',
-        medusa : imagesRoot +'medusa.png'
+        medusa : imagesRoot +'medusa.png',
+        treasure_box : imagesRoot + 'Treasure_Box.png'
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -165,6 +198,11 @@ function preloadDone() {
     g_sprites.medusa ={
         0:new Sprite(g_images.medusa,spriteSize,spriteSize,0,0),
         1:new Sprite(g_images.medusa,spriteSize,spriteSize,spriteSize,0)
+    };    
+    g_sprites.treasure_box ={
+        0:new Sprite(g_images.treasure_box,spriteSize,spriteSize,0,0),
+        1:new Sprite(g_images.treasure_box,spriteSize,spriteSize,spriteSize,0),
+        2:new Sprite(g_images.treasure_box,spriteSize,spriteSize,spriteSize*2,0)
     };
 
     entityManager.init();
@@ -172,6 +210,8 @@ function preloadDone() {
     createInitialViking();
     createMedusa();
     createSheep();
+    createTreasureBox();
+    createDoor();
 
     mainInit();
 }

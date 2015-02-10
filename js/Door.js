@@ -8,8 +8,9 @@ function Door(descr) {
     this.rememberResets();
     // Default sprite
     this.sprite = this.sprite || g_sprites.door[0];
+    this.currentSprite = this.currentSprite || g_sprites.door[0];
+    this.doorOpened = 0;
 };
-
 
 Door.prototype.setup = function (descr) {
     // Apply all setup properies from the (optional) descriptor
@@ -26,16 +27,23 @@ Door.prototype.rememberResets = function () {
 };
 
 Door.prototype.update = function (du) {
+    if (this.doorOpened ===1){
+        this.currentSprite = g_sprites.door[1];
+    }
 };
 
-Door.prototype.render = function (ctx,cx,cy) {
-    if (background_level01.countingHearts() === 0){
-        this.sprite = g_sprites.door[1];
-    }
+// Opens the door
+// Called from entityManager
+Door.prototype.openDoor = function(){
+    this.doorOpened =1;
+}
+
+Door.prototype.render = function (ctx) {
+
     // pass my scale into the sprite, for drawing
     var origScale = 1;
-    this.sprite.scale = 1;
-    this.sprite.drawCentredAt(ctx, cx, cy, this.rotation);
-    this.sprite.scale = origScale;
+    this.currentSprite.scale = 1;
+    this.currentSprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
+    this.currentSprite.scale = origScale;
 };
 

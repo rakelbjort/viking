@@ -13,7 +13,6 @@ function Sheep(descr) {
     this.lookingDirection=0;
 };
 
-
 Sheep.prototype.setup = function (descr) {
     // Apply all setup properies from the (optional) descriptor
     for (var property in descr) {
@@ -48,6 +47,7 @@ Sheep.prototype.update = function (du) {
     };
 };
 
+// called from entityManager
 Sheep.prototype.lookingAtViking = function(vikingCx, vikingCy) {
     // looks right
     if (vikingCx > this.cx && vikingCy === this.cy){

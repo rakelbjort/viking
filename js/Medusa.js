@@ -37,6 +37,7 @@ Medusa.prototype.update = function (du) {
 };
 
 // If medusa sees the viking it gets angry
+// called from entityManager
 Medusa.prototype.seesViking = function(vikingCx, vikingCy) {
     if (vikingCx === this.cx || vikingCy === this.cy){
         this.angry =1;

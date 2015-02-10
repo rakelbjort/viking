@@ -5,6 +5,8 @@ var entityManager = {
 _viking : [],
 _medusa : [],
 _sheep : [],
+_treasure_box : [],
+_door : [],
 
 KILL_ME_NOW : -1,
 
@@ -19,24 +21,26 @@ _forEachOf: function(aCategory, fn) {
 },
 
 deferredSetup : function () {
-    this._categories = [this._viking, this._medusa, this._sheep];
+    this._categories = [this._medusa, this._sheep, this._treasure_box, this._door, this._viking ];
 },
 
 init: function() {
 },
 
 generateViking : function(descr) {
-
     this._viking.push(new Viking(descr));
 },
-
 generateMedusa : function(descr) {
-
     this._medusa.push(new Medusa(descr));
 },
 generateSheep : function(descr) {
-
     this._sheep.push(new Sheep(descr));
+},
+generateTreasureBox : function(descr) {
+    this._treasure_box.push(new Treasure_Box(descr));
+},
+generateDoor : function(descr) {
+    this._door.push(new Door(descr));
 },
 
 
@@ -48,14 +52,26 @@ update: function(du) {
         var i = 0;
 
         while (i < aCategory.length) {
-            if (c === 1) {
+            // medusa
+            if (c === 0) {
                 //We're dealing with a medusa, check if he sees the viking
-                aCategory[i].seesViking(this._categories[0][0].cx,this._categories[0][0].cy);
+                aCategory[i].seesViking(this._categories[4][0].cx,this._categories[4][0].cy);
             }
-            if(c === 2){
+            //sheep
+            if(c === 1){
                 //We're checking the direction which the sheep should me looking at
-                aCategory[i].lookingAtViking(this._categories[0][0].cx,this._categories[0][0].cy);
+                aCategory[i].lookingAtViking(this._categories[4][0].cx,this._categories[4][0].cy);
             }
+            // door         
+            if(c === 3){
+                // We're checking if the door should open
+                // First if the treasure has been collected
+                if(this._categories[2][0].takeTreasure(this._categories[4][0].cx,this._categories[4][0].cy) === 1){
+                    aCategory[i].openDoor();
+                    background_level01.treasureOpen();
+                }
+            }
+            
             var status = aCategory[i].update(du);
             if (status === this.KILL_ME_NOW) {
                 // remove the dead guy, and shuffle the others down to

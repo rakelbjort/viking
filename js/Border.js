@@ -11,7 +11,6 @@ function Border(descr) {
     this._scale = 1;
 };
 
-
 Border.prototype.setup = function (descr) {
     // Apply all setup properies from the (optional) descriptor
     for (var property in descr) {

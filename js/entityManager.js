@@ -56,6 +56,8 @@ update: function(du) {
             if (c === 0) {
                 //We're dealing with a medusa, check if he sees the viking
                 aCategory[i].seesViking(this._categories[4][0].cx,this._categories[4][0].cy);
+
+
             }
             //sheep
             if(c === 1){

@@ -27,6 +27,7 @@ Medusa.prototype.rememberResets = function () {
     this.reset_rotation = this.rotation;
 };
 
+// Updates the face og Medusa
 Medusa.prototype.update = function (du) {
     if(this.angry === 1 ) {
         this.currentSprite = g_sprites.medusa[0];
@@ -41,11 +42,58 @@ Medusa.prototype.update = function (du) {
 Medusa.prototype.seesViking = function(vikingCx, vikingCy) {
     if (vikingCx === this.cx || vikingCy === this.cy){
         this.angry =1;
+        if (this.isVikingSafe(vikingCx, vikingCy) === true){
+        };
+        if (this.isVikingSafe(vikingCx, vikingCy) === false){
+            g_main.gameOver();
+        };
     } 
     else {
         this.angry =0;
     }
 };
+
+// Checks if there is a block between Medusa and the Viking
+// Later will check for sheep and other objects
+Medusa.prototype.isVikingSafe = function(vikingCx, vikingCy){
+    var topRightCx;
+    var topRightCy;
+    var isSafe = false;
+    for(var bx = 0; bx < background_level01.character.length; bx++) {
+        for(var by = 0; by < background_level01.character[bx].length; by++) {
+            if(background_level01.character[bx][by]=== '#') {
+                //Find the coords for the blocks to compare to the Viking and Medusa
+                topRightCx = background_level01.xBase + (background_level01.cellWidth*by);
+                topRightCy = background_level01.yBase + (background_level01.cellHeight*bx);
+                
+                // Check X
+                if ((this.cx === topRightCx) &&
+                (topRightCx === vikingCx)){
+                    if((this.cy < topRightCy) &&
+                    (topRightCy < vikingCy) 
+                    ||
+                    (vikingCy < topRightCy) &&
+                    (topRightCy< this.cy)
+                    ){
+                        isSafe= true;
+                    }
+                }
+                // Check Y
+                else if ( (this.cy === topRightCy) &&
+                    (topRightCy === vikingCy)){
+                    if((this.cx > topRightCx)&&
+                        (topRightCx > vikingCx) ||
+                        (vikingCx > topRightCx) &&
+                        (topRightCx >this.cx)
+                        ){
+                        isSafe =true;
+                    }  
+                }  
+            }
+        }
+    }
+    return isSafe;
+}
 
 Medusa.prototype.render = function (ctx) {
     // pass my scale into the sprite, for drawing
@@ -55,5 +103,3 @@ Medusa.prototype.render = function (ctx) {
     this.currentSprite.scale = origScale;
 
 };
-
-

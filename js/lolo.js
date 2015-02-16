@@ -150,7 +150,8 @@ function requestPreloads() {
         tree: imagesRoot +'Tree_64.png',
         sheep: imagesRoot + 'sheep_64_spriteSheet.png',
         medusa : imagesRoot +'medusa.png',
-        treasure_box : imagesRoot + 'Treasure_Box.png'
+        treasure_box : imagesRoot + 'Treasure_Box.png',
+        block : imagesRoot + 'block.png'
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -204,7 +205,9 @@ function preloadDone() {
         1:new Sprite(g_images.treasure_box,spriteSize,spriteSize,spriteSize,0),
         2:new Sprite(g_images.treasure_box,spriteSize,spriteSize,spriteSize*2,0)
     };
-
+    g_sprites.block = {
+        0:new Sprite(g_images.block,spriteSize,spriteSize,0,0)
+    };
     entityManager.init();
 
     createInitialViking();

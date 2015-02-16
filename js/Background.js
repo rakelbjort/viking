@@ -37,6 +37,14 @@ Background.prototype.render = function (ctx) {
                     topRightY : this.yBase + (this.cellHeight*bx),
                 });
                 tree.render(ctx,tree.topRightX,tree.topRightY);            
+            }     
+            // Make Blocks         
+            if(this.character[bx][by]=== '#') {
+                var block = new Block({
+                    topRightX : this.xBase + (this.cellWidth*by),
+                    topRightY : this.yBase + (this.cellHeight*bx),
+                });
+                block.render(ctx,block.topRightX,block.topRightY);            
             }           
 
         }
@@ -68,7 +76,6 @@ Background.prototype.firstCheck = function (){
             openDoor === false &&
             this.character[bx][by] === '=' ||           // 
             
-
             this.character[bx][by] === 'o' &&           // treasure box and 
             background_level01.countingHearts() !==0){
                 return true;
@@ -85,10 +92,9 @@ Background.prototype.secondCheck = function(nextCellX,nextCellY){
             this.character[nextCellY][nextCellX] ==='-' ||      // border
             this.character[nextCellY][nextCellX] ==='s' ||      // sheep
             this.character[nextCellY][nextCellX] ==='m' ||      // medusa
-            this.character[nextCellY][nextCellX] ==='*' ||             
+            this.character[nextCellY][nextCellX] ==='*' ||      // tree      
             openDoor ===false   && 
-            this.character[nextCellY][nextCellX] ==='=' ||
-              // tree
+            this.character[nextCellY][nextCellX] ==='=' ||      // Door
 
             this.character[nextCellY][nextCellX] ==='o' &&      // treasure box and
             background_level01.countingHearts() !==0) {
@@ -98,13 +104,25 @@ Background.prototype.secondCheck = function(nextCellX,nextCellY){
     }
 }
 
+// Objects the block can't move through
+Background.prototype.cantMoveThrough = function(nextCellY,nextCellX){
+
+    if((this.character[nextCellY][nextCellX] === 'h') ||    // heart
+    (this.character[nextCellY][nextCellX] === 'o') ||       // treasure box
+    (this.character[nextCellY][nextCellX] === '#') ||       // block
+    (this.character[nextCellY][nextCellX] === '=')){        // door
+        return true;
+    }
+}
+
 // Checks if the viking is colliding with objects when he is moving down
-Background.prototype.collisionCheckDown = function (cx,cy) {
+Background.prototype.moveCheckDown = function (cx,cy) {
     for(var bx = 0; bx < this.character.length; bx++) {
         for(var by = 0; by < this.character[bx].length;by++) {
             if(this.firstCheck) { 
                 var nextCellX = Math.floor( (cx - this.xBase) / this.cellWidth) + by;
                 var nextCellY = Math.floor( (cy - this.yBase) / this.cellHeight) + bx +1;
+                var nextNextCellY = Math.floor( (cy - this.yBase) / this.cellHeight) + bx +2;
 
                 if(this.character[nextCellY] === undefined) {
                     return 0;
@@ -113,7 +131,28 @@ Background.prototype.collisionCheckDown = function (cx,cy) {
                     return 0;
                 }
 
-                if(this.secondCheck(nextCellX,nextCellY)) {         // have not collected all hearts
+                // Are we dealing with a Block
+                if(this.character[nextCellY][nextCellX] === '#' ) {
+                    if ((cy + (this.cellHeight*bx) >= (this.yBase + (nextCellY-1)*this.cellHeight)) && 
+                    (cy + (this.cellHeight*bx)<= (this.yBase + ((nextCellY)*this.cellHeight)))) {
+                        // checks if there is an object behind the block
+                        if (this.secondCheck(nextCellX,nextNextCellY)  ||
+                        (this.cantMoveThrough(nextNextCellY,nextCellX))){
+                            return 3;
+                        }
+                        // otherwise we clear the current block cell and 
+                        // draw the block in the next frame
+                        else{
+                            // and update the 2D level array
+                            this.character[nextCellY][nextCellX] = '/';
+                            this.character[nextNextCellY][nextCellX] = '#';
+                            return 2;
+                        }
+                    }
+                }
+                // not dealing with a block
+                // Viking is blocked by and object
+                if(this.secondCheck(nextCellX,nextCellY)) {         
 
                     if ((cy + (this.cellHeight*bx) >= (this.yBase + (nextCellY-1)*this.cellHeight)) && 
                     (cy + (this.cellHeight*bx)<= (this.yBase + ((nextCellY)*this.cellHeight)))) {
@@ -128,21 +167,42 @@ Background.prototype.collisionCheckDown = function (cx,cy) {
 
 
 // Checks if the viking is colliding with objects when he is moving up
-Background.prototype.collisionCheckUp= function (cx,cy) {
+Background.prototype.moveCheckUp= function (cx,cy) {
     for(var bx = 0; bx < this.character.length; bx++) {
         for(var by = 0; by < this.character[bx].length;by++) {
-            if(this.firstCheck) { // have not collected all hearts
+            if(this.firstCheck) { 
                 
                 var nextCellX = Math.floor( (cx - this.xBase) / this.cellWidth) + by;
                 var nextCellY = Math.floor( (cy - this.yBase) / this.cellHeight) - bx -1 ;
+                var nextNextCellY = Math.floor( (cy - this.yBase) / this.cellHeight) - bx -2 ;
 
                 if(this.character[nextCellY] === undefined) {
                     return 0;
                 }
                 if(this.character[nextCellY][nextCellX] === undefined) {
                     return 0;
-                }                    
-
+                }          
+                // Are we dealing with a Block          
+                if(this.character[nextCellY][nextCellX] === '#' ) {
+                    if((cx + (this.cellWidth*by) >= (this.xBase + ((nextCellX-1)*this.cellWidth))) && 
+                       (cx + (this.cellWidth*by) <= (this.xBase + ((nextCellX)*this.cellWidth)))) {
+                        // checks if there is an object behind the block
+                        if (this.secondCheck(nextCellX,nextNextCellY)  ||
+                        (this.cantMoveThrough(nextNextCellY,nextCellX))){
+                            return 3;
+                        }
+                        // otherwise we clear the current block cell and 
+                        // draw the block in the next frame
+                        else{
+                            // and update the 2D level array
+                            this.character[nextCellY][nextCellX] = '/';
+                            this.character[nextNextCellY][nextCellX] = '#';
+                            return 2;
+                        }
+                    }
+                }
+                // not dealing with a block
+                // Viking is blocked by and object
                 if(this.secondCheck(nextCellX,nextCellY)) {         
 
                     if((cx + (this.cellWidth*by) >= (this.xBase + ((nextCellX-1)*this.cellWidth))) && 
@@ -155,14 +215,14 @@ Background.prototype.collisionCheckUp= function (cx,cy) {
         }
     }
 }    
-  
-// Checks if the viking is colliding with objects when he is moving to the sides
-Background.prototype.collisionCheckSides = function (cx,cy) {
+// Checks if the viking is colliding with objects when he is moving left
+Background.prototype.moveCheckLeft = function (cx,cy) {
     for(var bx = 0; bx < this.character.length; bx++) {
         for(var by = 0; by < this.character[bx].length;by++) {
-            if(this.firstCheck) { // have not collected all hearts
+            if(this.firstCheck) { 
 
                 var nextCellX = Math.floor( (cx - this.xBase) / this.cellWidth) + by;
+                var nextNextCellX = Math.floor( (cx - this.xBase) / this.cellWidth) + by -1;
                 var nextCellY = Math.floor( (cy - this.yBase) / this.cellHeight) + bx ;
 
                 if(this.character[nextCellY] === undefined) {
@@ -172,6 +232,79 @@ Background.prototype.collisionCheckSides = function (cx,cy) {
                 if(this.character[nextCellY][nextCellX] === undefined) {
                     return 0;
                 }
+                // Are we dealing with a Block          
+                if(this.character[nextCellY][nextCellX] === '#' ) {
+                    if((cx + (this.cellWidth*by) >= (this.xBase + ((nextCellX-1)*this.cellWidth))) && 
+                       (cx + (this.cellWidth*by) <= (this.xBase + ((nextCellX)*this.cellWidth)))) {
+                    
+                        // checks if there is an object behind the block
+                        if (this.secondCheck(nextNextCellX,nextCellY)  ||
+                        (this.cantMoveThrough(nextCellY,nextNextCellX))){
+                            return 3;
+                        }
+                        // otherwise we clear the current block cell and 
+                        // draw the block in the next frame
+                        else{
+                            // and update the 2D level array
+                            this.character[nextCellY][nextCellX] = '/';
+                            this.character[nextCellY][nextNextCellX] = '#';
+                            return 2;
+                        }
+                    }
+                }
+                // not dealing with a block
+                // Viking is blocked by and object
+                if(this.secondCheck(nextCellX,nextCellY)) {    
+
+                    if((cx + (this.cellWidth*by) >= (this.xBase + ((nextCellX-1)*this.cellWidth))) && 
+                       (cx + (this.cellWidth*by) <= (this.xBase + ((nextCellX)*this.cellWidth)))) {
+                        return 1;
+                    }                
+                } 
+                else return; 
+            }
+        }
+    }
+}
+// Checks if the viking is colliding with objects when he is moving right
+Background.prototype.moveCheckRight = function (cx,cy) {
+    for(var bx = 0; bx < this.character.length; bx++) {
+        for(var by = 0; by < this.character[bx].length;by++) {
+            if(this.firstCheck) { 
+
+                var nextCellX = Math.floor( (cx - this.xBase) / this.cellWidth) + by;
+                var nextNextCellX = Math.floor( (cx - this.xBase) / this.cellWidth) + by +1;
+                var nextCellY = Math.floor( (cy - this.yBase) / this.cellHeight) + bx ;
+
+                if(this.character[nextCellY] === undefined) {
+                    return 0;
+                }
+
+                if(this.character[nextCellY][nextCellX] === undefined) {
+                    return 0;
+                }
+                // Are we dealing with a Block          
+                if(this.character[nextCellY][nextCellX] === '#' ) {
+                    if((cx + (this.cellWidth*by) >= (this.xBase + ((nextCellX-1)*this.cellWidth))) && 
+                       (cx + (this.cellWidth*by) <= (this.xBase + ((nextCellX)*this.cellWidth)))) {
+                    
+                        // checks if there is an object behind the block
+                        if (this.secondCheck(nextNextCellX,nextCellY)  ||
+                        (this.cantMoveThrough(nextCellY,nextNextCellX))){
+                            return 3;
+                        }
+                        // otherwise we clear the current block cell and 
+                        // draw the block in the next frame
+                        else{
+                            // and update the 2D level array
+                            this.character[nextCellY][nextCellX] = '/';
+                            this.character[nextCellY][nextNextCellX] = '#';
+                            return 2;
+                        }
+                    }
+                }
+                // not dealing with a block
+                // Viking is blocked by and object
                 if(this.secondCheck(nextCellX,nextCellY)) {    
 
                     if((cx + (this.cellWidth*by) >= (this.xBase + ((nextCellX-1)*this.cellWidth))) && 

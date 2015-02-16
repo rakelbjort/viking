@@ -65,6 +65,10 @@ Background.prototype.firstCheck = function (){
             this.character[bx][by] === 'm' ||           // medusa
             this.character[bx][by] === '*' ||           // tree
 
+            openDoor === false &&
+            this.character[bx][by] === '=' ||           // 
+            
+
             this.character[bx][by] === 'o' &&           // treasure box and 
             background_level01.countingHearts() !==0){
                 return true;
@@ -81,7 +85,10 @@ Background.prototype.secondCheck = function(nextCellX,nextCellY){
             this.character[nextCellY][nextCellX] ==='-' ||      // border
             this.character[nextCellY][nextCellX] ==='s' ||      // sheep
             this.character[nextCellY][nextCellX] ==='m' ||      // medusa
-            this.character[nextCellY][nextCellX] ==='*' ||      // tree
+            this.character[nextCellY][nextCellX] ==='*' ||             
+            openDoor ===false   && 
+            this.character[nextCellY][nextCellX] ==='=' ||
+              // tree
 
             this.character[nextCellY][nextCellX] ==='o' &&      // treasure box and
             background_level01.countingHearts() !==0) {

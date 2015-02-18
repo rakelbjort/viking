@@ -151,7 +151,8 @@ function requestPreloads() {
         sheep: imagesRoot + 'sheep_64_spriteSheet.png',
         medusa : imagesRoot +'medusa.png',
         treasure_box : imagesRoot + 'Treasure_Box.png',
-        block : imagesRoot + 'block.png'
+        block : imagesRoot + 'block.png',
+        bullet : imagesRoot + 'Bullet.png'
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -208,6 +209,10 @@ function preloadDone() {
     g_sprites.block = {
         0:new Sprite(g_images.block,spriteSize,spriteSize,0,0)
     };
+    g_sprites.bullet = {
+        0:new Sprite(g_images.bullet,spriteSize,spriteSize,0,0)
+    };
+
     entityManager.init();
 
     createInitialViking();

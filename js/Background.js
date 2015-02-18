@@ -138,7 +138,7 @@ Background.prototype.moveCheckDown = function (cx,cy) {
                         // checks if there is an object behind the block
                         if (this.secondCheck(nextCellX,nextNextCellY)  ||
                         (this.cantMoveThrough(nextNextCellY,nextCellX))){
-                            return 3;
+                            return 2;
                         }
                         // otherwise we clear the current block cell and 
                         // draw the block in the next frame
@@ -189,7 +189,7 @@ Background.prototype.moveCheckUp= function (cx,cy) {
                         // checks if there is an object behind the block
                         if (this.secondCheck(nextCellX,nextNextCellY)  ||
                         (this.cantMoveThrough(nextNextCellY,nextCellX))){
-                            return 3;
+                            return 2;
                         }
                         // otherwise we clear the current block cell and 
                         // draw the block in the next frame
@@ -240,7 +240,7 @@ Background.prototype.moveCheckLeft = function (cx,cy) {
                         // checks if there is an object behind the block
                         if (this.secondCheck(nextNextCellX,nextCellY)  ||
                         (this.cantMoveThrough(nextCellY,nextNextCellX))){
-                            return 3;
+                            return 2;
                         }
                         // otherwise we clear the current block cell and 
                         // draw the block in the next frame
@@ -291,7 +291,7 @@ Background.prototype.moveCheckRight = function (cx,cy) {
                         // checks if there is an object behind the block
                         if (this.secondCheck(nextNextCellX,nextCellY)  ||
                         (this.cantMoveThrough(nextCellY,nextNextCellX))){
-                            return 3;
+                            return 2;
                         }
                         // otherwise we clear the current block cell and 
                         // draw the block in the next frame

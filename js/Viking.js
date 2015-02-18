@@ -16,6 +16,7 @@ function Viking(descr) {
         Ticker:0
     };
     this.currentLevel = background_level01;
+    this.direction = 'right';
 
 };
 
@@ -61,6 +62,7 @@ var KEY_S = "S".charCodeAt(0);
 var KEY_A= "A".charCodeAt(0);
 var KEY_D = "D".charCodeAt(0);
 var KEY_W = "W".charCodeAt(0);
+var KEY_X = "X".charCodeAt(0);
 
 // numbers are the arrows on the keyboard
 Viking.prototype.GO_DOWN_S = KEY_S;
@@ -71,6 +73,9 @@ Viking.prototype.GO_LEFT_A = KEY_A;
 Viking.prototype.GO_LEFT = '37';
 Viking.prototype.GO_RIGHT_D = KEY_D;
 Viking.prototype.GO_RIGHT = '39';
+// Shoot snowballs
+Viking.prototype.FIRE =  KEY_X;
+
 Viking.prototype.numSubSteps = 1;
 
 
@@ -91,6 +96,11 @@ Viking.prototype.update = function (du) {
     // Check if Viking is collecting a Heart
     this.currentLevel.collidesWithHeart(this.cx,this.cy);
 
+    // Shots fired, take the direction of the viking,
+    // so we know which directionthe bullet should go
+    if(eatKey(this.FIRE)){
+        entityManager.fireBullet(this.cx, this.cy, this.direction);
+    }
 
     // Viking goes one cell down if it's not colliding with anything
     if (eatKey(this.GO_DOWN) || eatKey(this.GO_DOWN_S) ){
@@ -125,11 +135,11 @@ Viking.prototype.vikingMovesDown = function (prevY){
     }
     // Checks if there is an Object behind the block
     // Either moves the block or stops it
-    else if(this.currentLevel.moveCheckDown(this.cx,this.cy) ===2 || 
-    this.currentLevel.moveCheckDown(this.cx,this.cy) ===3){}
+    else if(this.currentLevel.moveCheckDown(this.cx,this.cy) ===2){}
     else{
         this.cy += this.currentSprite.height ;
     }
+    this.direction = 'down';
 }
 
 Viking.prototype.vikingMovesUp = function (prevY){
@@ -138,11 +148,12 @@ Viking.prototype.vikingMovesUp = function (prevY){
     }
     // Checks if there is an Object behind the block
     // Either moves the block or stops it
-    else if(this.currentLevel.moveCheckUp(this.cx,this.cy) ===2 ||
-    this.currentLevel.moveCheckUp(this.cx,this.cy) ===3){}
+    else if(this.currentLevel.moveCheckUp(this.cx,this.cy) ===2){}
     else{
         this.cy -= this.currentSprite.height ;
     }
+    this.direction = 'up';
+
 }
 
 Viking.prototype.vikingMovesLeft = function(prevX){
@@ -152,10 +163,11 @@ Viking.prototype.vikingMovesLeft = function(prevX){
     }
     // Checks if there is an Object behind the block
     // Either moves the block or stops it
-    else if(this.currentLevel.moveCheckLeft(this.cx,this.cy) ===2 ||
-    this.currentLevel.moveCheckLeft(this.cx,this.cy) ===3){
+    else if(this.currentLevel.moveCheckLeft(this.cx,this.cy) ===2){
         this.cx = prevX;
     }        
+    this.direction = 'left';
+
 }
 
 Viking.prototype.vikingMovesRight = function (prevX){
@@ -165,10 +177,11 @@ Viking.prototype.vikingMovesRight = function (prevX){
     }
     // Checks if there is an Object behind the block
     // Either moves the block or stops it
-    else if(this.currentLevel.moveCheckRight(this.cx,this.cy) ===2 ||
-    this.currentLevel.moveCheckRight(this.cx,this.cy) ===3){
+    else if(this.currentLevel.moveCheckRight(this.cx,this.cy) ===2){
         this.cx = prevX;
-    }        
+    }   
+    this.direction = 'right';
+
 }
         
 

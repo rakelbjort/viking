@@ -5,36 +5,30 @@
 function Medusa(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
-    this.rememberResets();
     // Default sprite
     this.sprite = this.sprite || g_sprites.medusa[1];
     this.currentSprite = this.currentSprite ||g_sprites.medusa[1]
     this.angry = 0;
     this._scale = 1;
+    this.currentLevel = background_level01;
+
 };
 
-Medusa.prototype.setup = function (descr) {
-    // Apply all setup properies from the (optional) descriptor
-    for (var property in descr) {
-        this[property] = descr[property];
-    }
-};
+Medusa.prototype = new Entity();
 
-Medusa.prototype.rememberResets = function () {
-    // Remember my reset positions
-    this.reset_cx = this.cx;
-    this.reset_cy = this.cy;
-    this.reset_rotation = this.rotation;
+Medusa.prototype.getRadius = function () {
+    return (this.sprite.width / 2) * 0.9;
 };
-
 // Updates the face og Medusa
 Medusa.prototype.update = function (du) {
+    spatialManager.unregister(this);
     if(this.angry === 1 ) {
         this.currentSprite = g_sprites.medusa[0];
     };
     if(this.angry === 0) {
         this.currentSprite = g_sprites.medusa[1];
     };
+    spatialManager.register(this);
 };
 
 // If medusa sees the viking it gets angry
@@ -53,18 +47,20 @@ Medusa.prototype.seesViking = function(vikingCx, vikingCy) {
     }
 };
 
-// Checks if there is a block between Medusa and the Viking
-// Later will check for sheep and other objects
+// Checks if there is an object between Medusa and the Viking
+// They can't shoot through rocks, blocks, hearts, or other monsters though.
 Medusa.prototype.isVikingSafe = function(vikingCx, vikingCy){
     var topRightCx;
     var topRightCy;
     var isSafe = false;
-    for(var bx = 0; bx < background_level01.character.length; bx++) {
-        for(var by = 0; by < background_level01.character[bx].length; by++) {
-            if(background_level01.character[bx][by]=== '#') {
-                //Find the coords for the blocks to compare to the Viking and Medusa
-                topRightCx = background_level01.xBase + (background_level01.cellWidth*by);
-                topRightCy = background_level01.yBase + (background_level01.cellHeight*bx);
+    for(var bx = 0; bx < this.currentLevel.character.length; bx++) {
+        for(var by = 0; by < this.currentLevel.character[bx].length; by++) {
+            if(this.currentLevel.character[bx][by]=== '#'||    // block
+            this.currentLevel.character[bx][by]=== 's' ||      // sheep
+            this.currentLevel.character[bx][by]=== 'h') {      // heart
+                //Find the coords for the objects to compare to the Viking and Medusa
+                topRightCx = this.currentLevel.xBase + (this.currentLevel.cellWidth*by);
+                topRightCy = this.currentLevel.yBase + (this.currentLevel.cellHeight*bx);
                 
                 // Check X
                 if ((this.cx === topRightCx) &&

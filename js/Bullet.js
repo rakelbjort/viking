@@ -5,7 +5,6 @@
 function Bullet(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
-    this.rememberResets();
     // Default sprite
     this.sprite = this.sprite || g_sprites.bullet[0];
     this.currentSprite = this.currentSprite ||g_sprites.bullet[0];
@@ -13,31 +12,19 @@ function Bullet(descr) {
     this.direction;
 };
 
+Bullet.prototype = new Entity();
+
 Bullet.prototype.rotation = 0;
 Bullet.prototype.cx = 200;
 Bullet.prototype.cy = 200;
 Bullet.prototype.velX = 10;
 Bullet.prototype.velY = 10;
 
-Bullet.prototype.setup = function (descr) {
-    // Apply all setup properies from the (optional) descriptor
-    for (var property in descr) {
-        this[property] = descr[property];
-    }    
-};
-
-Bullet.prototype.rememberResets = function () {
-    // Remember my reset positions
-    this.reset_cx = this.cx;
-    this.reset_cy = this.cy;
-    this.reset_rotation = this.rotation;
-
-};
 
 Bullet.prototype.update = function (du) {
+    spatialManager.unregister(this);
     // direction of the bullet same direction as the Viking
     this.rotation +=1 * du;
-
     if (this.direction === 'right'){
         this.cx += this.velX * du;
     }
@@ -50,7 +37,20 @@ Bullet.prototype.update = function (du) {
     if(this.direction === 'up'){
         this.cy -= this.velY * du;
     }
+    var hitEntity = this.findHitEntity();
+        if (hitEntity) {
+
+            console.log('its a hit!');
+        }
+
+
+    spatialManager.register(this);
+
 };
+
+Bullet.prototype.getRadius = function(){
+    return 4;
+}
 
 
 Bullet.prototype.render = function (ctx) {

@@ -5,26 +5,12 @@
 function Heart(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
-    this.rememberResets();
     // Default sprite
     this.sprite = this.sprite || g_sprites.heart[0];
     this._scale = 1;
 };
 
-
-Heart.prototype.setup = function (descr) {
-    // Apply all setup properies from the (optional) descriptor
-    for (var property in descr) {
-        this[property] = descr[property];
-    }
-};
-
-Heart.prototype.rememberResets = function () {
-    // Remember my reset positions
-    this.reset_cx = this.cx;
-    this.reset_cy = this.cy;
-    this.reset_rotation = this.rotation;
-};
+Heart.prototype = new Entity();
 
 Heart.prototype.update = function (du) {
 };

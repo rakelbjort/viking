@@ -20,36 +20,16 @@ function Viking(descr) {
 
 };
 
-Viking.prototype.setup = function (descr) {
-    // Apply all setup properies from the (optional) descriptor
-    for (var property in descr) {
-        this[property] = descr[property];
-    }    
-    this._spatialID = spatialManager.getNewSpatialID();
+// Viking.prototype.setup = function (descr) {
+//     // Apply all setup properies from the (optional) descriptor
+//     for (var property in descr) {
+//         this[property] = descr[property];
+//     }    
+//     this._spatialID = spatialManager.getNewSpatialID();
 
-};
+// };
 
-Viking.prototype.NOMINALS = {
-    ANIM_FRAME_RATE :1
-};
-Viking.prototype.setPos = function (cx, cy) {
-    this.xBase = cx;
-    this.yBase = cy;
-    
-};
-
-Viking.prototype.getPos = function () {
-    return {posX : this.cx, posY : this.cy};
-}
-
-Viking.prototype.getSpatialID = function () {
-    return this._spatialID;
-};
-
-Viking.prototype.kill = function () {
-    console.log('her');
-    spatialManager.unregister(this);
-};
+Viking.prototype = new Entity();
 
 Viking.prototype.rememberResets = function () {
     // Remember my reset positions
@@ -57,6 +37,30 @@ Viking.prototype.rememberResets = function () {
     this.reset_cy = this.cy;
     this.reset_rotation = this.rotation;
 };
+
+Viking.prototype.NOMINALS = {
+    ANIM_FRAME_RATE :1
+};
+// Viking.prototype.setPos = function (cx, cy) {
+//     this.xBase = cx;
+//     this.yBase = cy;
+    
+// };
+
+// Viking.prototype.getPos = function () {
+//     return {posX : this.cx, posY : this.cy};
+// }
+
+// Viking.prototype.getSpatialID = function () {
+//     return this._spatialID;
+// };
+
+// Viking.prototype.kill = function () {
+//     console.log('her');
+//     spatialManager.unregister(this);
+// };
+
+
 
 var KEY_S = "S".charCodeAt(0);
 var KEY_A= "A".charCodeAt(0);
@@ -78,8 +82,14 @@ Viking.prototype.FIRE =  KEY_X;
 
 Viking.prototype.numSubSteps = 1;
 
+Viking.prototype.getRadius = function () {
+    return (this.sprite.width / 2) * 0.9;
+};
 
 Viking.prototype.update = function (du) {
+
+    // spatialManager.unregister(this);
+
     var steps = this.numSubSteps;
     var dStep = du / steps;
     for (var i = 0; i < steps; ++i) {
@@ -120,6 +130,7 @@ Viking.prototype.update = function (du) {
     else if (eatKey(this.GO_RIGHT) || eatKey(this.GO_RIGHT_D) ){
         this.vikingMovesRight(prevX);
     }
+    // spatialManager.register(this);
 
 };
 

@@ -5,7 +5,6 @@
 function Sheep(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
-    this.rememberResets();
     // Default sprite
     this.sprite = this.sprite || g_sprites.sheep[0];
     this.currentSprite = this.currentSprite ||g_sprites.sheep[0]
@@ -13,20 +12,8 @@ function Sheep(descr) {
     this.lookingDirection=0;
 };
 
-Sheep.prototype.setup = function (descr) {
-    // Apply all setup properies from the (optional) descriptor
-    for (var property in descr) {
-        this[property] = descr[property];
-    }    
-};
+Sheep.prototype = new Entity();
 
-Sheep.prototype.rememberResets = function () {
-    // Remember my reset positions
-    this.reset_cx = this.cx;
-    this.reset_cy = this.cy;
-    this.reset_rotation = this.rotation;
-
-};
 
 Sheep.prototype.update = function (du) {
     // Sheep looks left

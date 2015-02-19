@@ -5,7 +5,6 @@
 function Treasure_Box(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
-    this.rememberResets();
     // Default sprite
     this.sprite = this.sprite || g_sprites.treasure_box[0];
     this.currentSprite = this.currentSprite || g_sprites.treasure_box[0];
@@ -14,20 +13,8 @@ function Treasure_Box(descr) {
 
 };
 
+Treasure_Box.prototype = new Entity();
 
-Treasure_Box.prototype.setup = function (descr) {
-    // Apply all setup properies from the (optional) descriptor
-    for (var property in descr) {
-        this[property] = descr[property];
-    }
-};
-
-Treasure_Box.prototype.rememberResets = function () {
-    // Remember my reset positions
-    this.reset_cx = this.cx;
-    this.reset_cy = this.cy;
-    this.reset_rotation = this.rotation;
-};
 
 Treasure_Box.prototype.update = function (du) {
     // if all hearts are collected

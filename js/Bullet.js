@@ -20,9 +20,16 @@ Bullet.prototype.cy = 200;
 Bullet.prototype.velX = 10;
 Bullet.prototype.velY = 10;
 
-
+Bullet.prototype.takeBulletHit = function(){
+    this.kill();
+}
 Bullet.prototype.update = function (du) {
     spatialManager.unregister(this);
+
+    if(this._isDeadNow) return entityManager.KILL_ME_NOW;
+    this.lifeSpan -= du;
+    if (this.lifeSpan < 0) return entityManager.KILL_ME_NOW;
+
     // direction of the bullet same direction as the Viking
     this.rotation +=1 * du;
     if (this.direction === 'right'){
@@ -38,26 +45,30 @@ Bullet.prototype.update = function (du) {
         this.cy -= this.velY * du;
     }
     var hitEntity = this.findHitEntity();
-        if (hitEntity) {
-
-            console.log('its a hit!');
-        }
+    if (hitEntity) {
+        var canTakeHit = hitEntity.takeBulletHit;
+        if (canTakeHit) canTakeHit.call(hitEntity); 
+        // stop drawing the bullet if there is a hit!
+        console.log('hit yo');
+        this.takeBulletHit();
+    }
 
 
     spatialManager.register(this);
 
 };
 
-Bullet.prototype.getRadius = function(){
-    return 4;
-}
-
+Bullet.prototype.getRadius = function () {
+    return (this.sprite.width / 2) * 0.9;
+};
 
 Bullet.prototype.render = function (ctx) {
+
     // pass my scale into the sprite, for drawing
     var origScale = 1;
     this.currentSprite.scale = 1;
     this.currentSprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
     this.currentSprite.scale = origScale;
+    ctx.globalAlpha = 1;
 };
 

@@ -4,7 +4,8 @@ function Background(descr) {
     }
 }
 
-Background.prototype.update = function(ctx) {
+Background.prototype.update = function(du) {
+
 }
 
 // Calls the render function for each brick in the wall

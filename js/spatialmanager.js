@@ -58,7 +58,6 @@ findEntityInRange: function(posX, posY, radius) {
         if (this._entities[ID] != null){
             var e = this._entities[ID];
             var radii = Math.pow((e.getRadius() + radius),2);
-
             var distance = util.distSq(e.cx, e.cy, posX, posY);
             if(distance<radii){
                 return e;

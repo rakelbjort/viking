@@ -152,7 +152,8 @@ function requestPreloads() {
         medusa : imagesRoot +'medusa.png',
         treasure_box : imagesRoot + 'Treasure_Box.png',
         block : imagesRoot + 'block.png',
-        bullet : imagesRoot + 'Bullet.png'
+        bullet : imagesRoot + 'Bullet.png',
+        snowball : imagesRoot + 'snoball.png'
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -211,6 +212,9 @@ function preloadDone() {
     };
     g_sprites.bullet = {
         0:new Sprite(g_images.bullet,spriteSize,spriteSize,0,0)
+    };    
+    g_sprites.snowball = {
+        0:new Sprite(g_images.snowball,spriteSize,spriteSize,0,0)
     };
 
     entityManager.init();

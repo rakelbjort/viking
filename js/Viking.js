@@ -41,25 +41,6 @@ Viking.prototype.rememberResets = function () {
 Viking.prototype.NOMINALS = {
     ANIM_FRAME_RATE :1
 };
-// Viking.prototype.setPos = function (cx, cy) {
-//     this.xBase = cx;
-//     this.yBase = cy;
-    
-// };
-
-// Viking.prototype.getPos = function () {
-//     return {posX : this.cx, posY : this.cy};
-// }
-
-// Viking.prototype.getSpatialID = function () {
-//     return this._spatialID;
-// };
-
-// Viking.prototype.kill = function () {
-//     console.log('her');
-//     spatialManager.unregister(this);
-// };
-
 
 
 var KEY_S = "S".charCodeAt(0);
@@ -88,7 +69,7 @@ Viking.prototype.getRadius = function () {
 
 Viking.prototype.update = function (du) {
 
-    // spatialManager.unregister(this);
+    spatialManager.unregister(this);
 
     var steps = this.numSubSteps;
     var dStep = du / steps;
@@ -130,7 +111,9 @@ Viking.prototype.update = function (du) {
     else if (eatKey(this.GO_RIGHT) || eatKey(this.GO_RIGHT_D) ){
         this.vikingMovesRight(prevX);
     }
-    // spatialManager.register(this);
+
+
+    spatialManager.register(this);
 
 };
 

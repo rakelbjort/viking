@@ -13,6 +13,7 @@ function Tree(descr) {
 Tree.prototype = new Entity();
 
 Tree.prototype.update = function (du) {
+
 };
 
 Tree.prototype.render = function (ctx,cx,cy) {

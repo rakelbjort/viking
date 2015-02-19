@@ -19,9 +19,15 @@ Medusa.prototype = new Entity();
 Medusa.prototype.getRadius = function () {
     return (this.sprite.width / 2) * 0.9;
 };
+Medusa.prototype.takeBulletHit = function(){
+    // this.kill();
+}
+
 // Updates the face og Medusa
 Medusa.prototype.update = function (du) {
     spatialManager.unregister(this);
+    // if(this._isDeadNow) return entityManager.KILL_ME_NOW;
+
     if(this.angry === 1 ) {
         this.currentSprite = g_sprites.medusa[0];
     };

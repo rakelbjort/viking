@@ -53,6 +53,9 @@ generateTreasureBox : function(descr) {
 generateDoor : function(descr) {
     this._door.push(new Door(descr));
 },
+resetSheep: function() {
+    this._forEachOf(this._sheep, Sheep.prototype.reset);
+},
 
 
 update: function(du) {

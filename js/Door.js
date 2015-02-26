@@ -12,12 +12,29 @@ function Door(descr) {
 };
 
 Door.prototype = new Entity();
+Door.prototype.getRadius = function () {
+    return (this.sprite.width / 2) * 0.9;
+};
+Door.prototype.takeBulletHit = function(){
+    // this.kill();
+}
+Door.prototype.collectable = function(){
+    return false
+}
+Door.prototype.collidable = function(){
+    if (this.doorOpened === 0){return false}
+    if (this.doorOpened === 1){return true}
 
+}
 
 Door.prototype.update = function (du) {
+    spatialManager.unregister(this);
+
     if (this.doorOpened ===1){
         this.currentSprite = g_sprites.door[1];
     }
+    spatialManager.register(this);
+
 };
 
 // Opens the door

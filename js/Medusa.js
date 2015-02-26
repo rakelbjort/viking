@@ -22,6 +22,13 @@ Medusa.prototype.getRadius = function () {
 Medusa.prototype.takeBulletHit = function(){
     // this.kill();
 }
+Medusa.prototype.collidable = function(){
+    return false;
+
+}
+Medusa.prototype.collectable = function(){
+    return false
+}
 
 // Updates the face og Medusa
 Medusa.prototype.update = function (du) {
@@ -45,7 +52,7 @@ Medusa.prototype.seesViking = function(vikingCx, vikingCy) {
         if (this.isVikingSafe(vikingCx, vikingCy) === true){
         };
         if (this.isVikingSafe(vikingCx, vikingCy) === false){
-            g_main.gameOver();
+            // g_main.gameOver();
         };
     } 
     else {

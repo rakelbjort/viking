@@ -20,14 +20,6 @@ function Viking(descr) {
 
 };
 
-// Viking.prototype.setup = function (descr) {
-//     // Apply all setup properies from the (optional) descriptor
-//     for (var property in descr) {
-//         this[property] = descr[property];
-//     }    
-//     this._spatialID = spatialManager.getNewSpatialID();
-
-// };
 
 Viking.prototype = new Entity();
 
@@ -64,8 +56,11 @@ Viking.prototype.FIRE =  KEY_X;
 Viking.prototype.numSubSteps = 1;
 
 Viking.prototype.getRadius = function () {
-    return (this.sprite.width / 2) * 0.9;
+    return (this.currentSprite.width / 2) * 0.9;
 };
+Viking.prototype.collidable = function(){
+    return false;
+}
 
 Viking.prototype.update = function (du) {
 
@@ -95,88 +90,48 @@ Viking.prototype.update = function (du) {
 
     // Viking goes one cell down if it's not colliding with anything
     if (eatKey(this.GO_DOWN) || eatKey(this.GO_DOWN_S) ){
-        this.vikingMovesDown(prevY);
+        this.cy += this.currentSprite.height ;
+        this.direction = 'down';    
     }
 
     // Viking goes one cell up if it's not colliding with anything
     else if (eatKey(this.GO_UP) || eatKey(this.GO_UP_W)){
-        this.vikingMovesUp(prevY);
+        this.cy -= this.currentSprite.height ;
+        this.direction = 'up';
     }
     // Viking goes one cell left if it's not colliding with anything
     else if (eatKey(this.GO_LEFT ) || eatKey(this.GO_LEFT_A)){
-        this.vikingMovesLeft(prevX);
+        this.cx -= this.currentSprite.width;
+        this.direction = 'left';
     }
 
     // Viking goes one cell right if it's not colliding with anything
     else if (eatKey(this.GO_RIGHT) || eatKey(this.GO_RIGHT_D) ){
-        this.vikingMovesRight(prevX);
+        this.cx += this.currentSprite.width;
+        this.direction = 'right';
     }
 
+    // gá ef vikingur collid-ar við annað í entity þá tjékka hvort hægt sé að 
+    // hreyfa hlutinn eða ekki, "canMove"
+    // Ef "canMove" þá hreyfa víkinginn, annars ekki
 
+    var hitEntity = this.findHitEntity();
+    // console.log(hitEntity)
+    if (hitEntity) {
+        // var isMoveable = hitEntity.moveableObject(this.direction);
+        // if(isMoveable === undefined) return;
+        var isCollectable = hitEntity.collectable();
+        var isCollidable = hitEntity.collidable(this.direction);
+        // console.log(isCollidable)
+        if(isCollidable === true || isCollectable === true ) return
+        this.cx = prevX;
+        this.cy = prevY;
+    
+    }
     spatialManager.register(this);
 
 };
 
-
-//=====================
-//  Moving the Viking
-//=====================
-
-
-Viking.prototype.vikingMovesDown = function (prevY){
-    if(this.currentLevel.moveCheckDown(this.cx,this.cy) ===1){
-          this.cy = prevY;
-    }
-    // Checks if there is an Object behind the block
-    // Either moves the block or stops it
-    else if(this.currentLevel.moveCheckDown(this.cx,this.cy) ===2){}
-    else{
-        this.cy += this.currentSprite.height ;
-    }
-    this.direction = 'down';
-}
-
-Viking.prototype.vikingMovesUp = function (prevY){
-    if(this.currentLevel.moveCheckUp(this.cx,this.cy) ===1)  {
-        this.cy = prevY;
-    }
-    // Checks if there is an Object behind the block
-    // Either moves the block or stops it
-    else if(this.currentLevel.moveCheckUp(this.cx,this.cy) ===2){}
-    else{
-        this.cy -= this.currentSprite.height ;
-    }
-    this.direction = 'up';
-
-}
-
-Viking.prototype.vikingMovesLeft = function(prevX){
-    this.cx -= this.currentSprite.width;
-    if(this.currentLevel.moveCheckLeft(this.cx,this.cy) ===1){
-        this.cx = prevX;
-    }
-    // Checks if there is an Object behind the block
-    // Either moves the block or stops it
-    else if(this.currentLevel.moveCheckLeft(this.cx,this.cy) ===2){
-        this.cx = prevX;
-    }        
-    this.direction = 'left';
-
-}
-
-Viking.prototype.vikingMovesRight = function (prevX){
-    this.cx += this.currentSprite.width;
-    if(this.currentLevel.moveCheckRight(this.cx,this.cy) ===1){
-        this.cx = prevX;
-    }
-    // Checks if there is an Object behind the block
-    // Either moves the block or stops it
-    else if(this.currentLevel.moveCheckRight(this.cx,this.cy) ===2){
-        this.cx = prevX;
-    }   
-    this.direction = 'right';
-
-}
         
 
 Viking.prototype.computeSubStep = function (du){

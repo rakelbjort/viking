@@ -23,6 +23,14 @@ Bullet.prototype.velY = 10;
 Bullet.prototype.takeBulletHit = function(){
     this.kill();
 }
+Bullet.prototype.collidable = function(){
+    return true;
+
+}
+Bullet.prototype.collectable = function(){
+    return false;
+}
+
 Bullet.prototype.update = function (du) {
     spatialManager.unregister(this);
 
@@ -47,12 +55,13 @@ Bullet.prototype.update = function (du) {
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit;
-        if (canTakeHit) canTakeHit.call(hitEntity); 
-        // stop drawing the bullet if there is a hit!
-        console.log('hit yo');
-        this.takeBulletHit();
+        if (canTakeHit) {
+            canTakeHit.call(hitEntity);
+            // stop drawing the bullet if there is a hit!
+            this.takeBulletHit();
+        } 
+        return;
     }
-
 
     spatialManager.register(this);
 

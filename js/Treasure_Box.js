@@ -14,10 +14,25 @@ function Treasure_Box(descr) {
 };
 
 Treasure_Box.prototype = new Entity();
+Treasure_Box.prototype.getRadius = function () {
+    return (this.sprite.width / 2) * 0.9;
+};
+Treasure_Box.prototype.takeBulletHit = function(){
+    // this.kill();
+}
+Treasure_Box.prototype.collidable = function(){
+    if(this.open === 0){ return false}
+    if (this.open ===1){ return true};
 
+}
+Treasure_Box.prototype.collectable = function(){
+    return false
+}
 
 Treasure_Box.prototype.update = function (du) {
     // if all hearts are collected
+    spatialManager.unregister(this);
+
     if(background_level01.countingHearts() === 0){
         this.open =1;
     }
@@ -27,6 +42,8 @@ Treasure_Box.prototype.update = function (du) {
     if(this.treasureGone ===1){
         this.currentSprite = g_sprites.treasure_box[2];
     } 
+    spatialManager.register(this);
+
 };
 
 // If the treasure box is open and the viking collides with

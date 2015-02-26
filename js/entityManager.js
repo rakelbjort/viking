@@ -8,6 +8,10 @@ _sheep : [],
 _treasure_box : [],
 _door : [],
 _bullet : [],
+_border:[],
+_tree:[],
+_heart:[],
+_block:[],
 
 KILL_ME_NOW : -1,
 
@@ -32,7 +36,7 @@ _forEachOf: function(aCategory, fn) {
 },
 
 deferredSetup : function () {
-    this._categories = [this._medusa, this._sheep, this._treasure_box, this._door, this._bullet ,this._viking ];
+    this._categories = [this._medusa, this._sheep, this._treasure_box, this._door, this._bullet , this._block,this._viking,this._border, this._tree, this._heart];
 },
 
 init: function() {
@@ -53,8 +57,17 @@ generateTreasureBox : function(descr) {
 generateDoor : function(descr) {
     this._door.push(new Door(descr));
 },
-resetSheep: function() {
-    this._forEachOf(this._sheep, Sheep.prototype.reset);
+generateBorder : function(descr) {
+    this._border.push(new Border(descr));
+},
+generateTree : function(descr) {
+    this._tree.push(new Tree(descr));
+},
+generateHeart : function(descr) {
+    this._heart.push(new Heart(descr));
+},
+generateBlock : function(descr) {
+    this._block.push(new Block(descr));
 },
 
 
@@ -69,18 +82,18 @@ update: function(du) {
             // medusa
             if (c === 0) {
                 //We're dealing with a medusa, check if he sees the viking
-                aCategory[i].seesViking(this._categories[5][0].cx,this._categories[5][0].cy);
+                aCategory[i].seesViking(this._categories[6][0].cx,this._categories[6][0].cy);
             }
             //sheep
             if(c === 1){
                 //We're checking the direction which the sheep should me looking at
-                aCategory[i].lookingAtViking(this._categories[5][0].cx,this._categories[5][0].cy);
+                aCategory[i].lookingAtViking(this._categories[6][0].cx,this._categories[6][0].cy);
             }
             // door         
             if(c === 3){
                 // We're checking if the door should open
                 // First if the treasure has been collected
-                if(this._categories[2][0].takeTreasure(this._categories[5][0].cx,this._categories[5][0].cy) === 1){
+                if(this._categories[2][0].takeTreasure(this._categories[6][0].cx,this._categories[6][0].cy) === 1){
                     aCategory[i].openDoor();
                     background_level01.treasureOpen();
                 }

@@ -91,6 +91,72 @@ function createDoor(){
         }
     };
 }
+
+function createBorder() {
+
+    for(var bx = 0; bx < background_level01.character.length; bx++) {
+    //First value of matrix designates row so below we multiply by bx
+        for(var by = 0; by < background_level01.character[bx].length; by++) {
+            posx = background_level01.xBase + (background_level01.cellWidth*by);
+            posy = background_level01.yBase + (background_level01.cellHeight*bx);
+            if(background_level01.character[bx][by]=== '-') {
+                entityManager.generateBorder({
+                    cx : posx,
+                    cy : posy
+                });
+            }
+        }
+    };
+}
+function createTree() {
+
+    for(var bx = 0; bx < background_level01.character.length; bx++) {
+    //First value of matrix designates row so below we multiply by bx
+        for(var by = 0; by < background_level01.character[bx].length; by++) {
+            posx = background_level01.xBase + (background_level01.cellWidth*by);
+            posy = background_level01.yBase + (background_level01.cellHeight*bx);
+            if(background_level01.character[bx][by]=== '*') {
+                entityManager.generateTree({
+                    cx : posx,
+                    cy : posy
+                });
+            }
+        }
+    };
+}
+function createHeart() {
+
+    for(var bx = 0; bx < background_level01.character.length; bx++) {
+    //First value of matrix designates row so below we multiply by bx
+        for(var by = 0; by < background_level01.character[bx].length; by++) {
+            posx = background_level01.xBase + (background_level01.cellWidth*by);
+            posy = background_level01.yBase + (background_level01.cellHeight*bx);
+            if(background_level01.character[bx][by]=== 'h') {
+                entityManager.generateHeart({
+                    cx : posx,
+                    cy : posy
+                });
+            }
+        }
+    };
+}
+function createBlock() {
+
+    for(var bx = 0; bx < background_level01.character.length; bx++) {
+    //First value of matrix designates row so below we multiply by bx
+        for(var by = 0; by < background_level01.character[bx].length; by++) {
+            posx = background_level01.xBase + (background_level01.cellWidth*by);
+            posy = background_level01.yBase + (background_level01.cellHeight*bx);
+            if(background_level01.character[bx][by]=== '#') {
+                entityManager.generateBlock({
+                    cx : posx,
+                    cy : posy
+                });
+            }
+        }
+    };
+}
+
 function gatherInputs() {
     // Nothing to do here!
     // The event handlers do everything we need for now.
@@ -101,7 +167,7 @@ function gatherInputs() {
 // =================
 
 function updateSimulation(du) {
-    background_level01.update(du);
+    // background_level01.update(du);
     entityManager.update(du);
 }
 
@@ -117,7 +183,7 @@ function renderGameStatus(){
 
  
 function renderSimulation(ctx) {
-    background_level01.render(ctx);
+    // background_level01.render(ctx);
     entityManager.render(ctx);
     renderGameStatus();
 }
@@ -182,7 +248,7 @@ function preloadDone() {
     g_sprites.heart ={
         0:new Sprite(g_images.heart,spriteSize,spriteSize,0,0)
     };
-    g_sprites.border ={
+    g_sprites.borders ={
         0:new Sprite(g_images.borders_level01,spriteSize,spriteSize,0,0)
     };
     g_sprites.door ={
@@ -224,6 +290,10 @@ function preloadDone() {
     createSheep();
     createTreasureBox();
     createDoor();
+    createBorder();
+    createTree();
+    createHeart();
+    createBlock();
 
     mainInit();
 }

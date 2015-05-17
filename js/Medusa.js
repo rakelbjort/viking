@@ -6,106 +6,147 @@ function Medusa(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
     // Default sprite
-    this.sprite = this.sprite || g_sprites.medusa[1];
-    this.currentSprite = this.currentSprite ||g_sprites.medusa[1]
+    this.sprite = this.sprite || g_sprites.medusa[0];
+    this.currentSprite = this.currentSprite ||g_sprites.medusa[0];
+    // Starts not angry
     this.angry = 0;
     this._scale = 1;
-    this.currentLevel = background_level01;
-
+    this.oneShot = 1;
+    // Clear the level
+    this.killAllMedusa = false;
+    this.explodeMedusa = false;
+    this._animation = {
+        Frame:1,
+        Ticker:0
+    };
 };
 
 Medusa.prototype = new Entity();
 
 Medusa.prototype.getRadius = function () {
-    return (this.sprite.width / 2) * 0.9;
+    return (this.sprite.width / 2);
 };
-Medusa.prototype.takeBulletHit = function(){
-    // this.kill();
-}
-Medusa.prototype.collidable = function(){
+Medusa.prototype.canMoveObject = function(){
     return false;
-
-}
+};
 Medusa.prototype.collectable = function(){
     return false
-}
+};
+Medusa.prototype.canMedusaSeeThroughThis = function(){
+    return false;
+};
+Medusa.prototype.canSnowballGoThroughObject = function(){
+    return false;
+};
+Medusa.prototype.isDead = function(){
+    return false;
+};
+Medusa.prototype.takeDragonHit = function(){
+};
+Medusa.prototype.canMedusaKillIt = function(){
+    return false;
+};
 
-// Updates the face og Medusa
+// Updates the face of Medusa
 Medusa.prototype.update = function (du) {
     spatialManager.unregister(this);
-    // if(this._isDeadNow) return entityManager.KILL_ME_NOW;
-
-    if(this.angry === 1 ) {
-        this.currentSprite = g_sprites.medusa[0];
-    };
-    if(this.angry === 0) {
+    if(this.killAllMedusa) this._isDeadNow = true;
+    if(this._isDeadNow) return entityManager.KILL_ME_NOW;
+    // Which direction is it trying to kill the Viking
+    if(this.angry === 1){
+        var seeEntity = this.findEntityInSameLineAbove();
+    }
+    if(this.angry === 2){
+        var seeEntity = this.findEntityInSameLineDown(this.cx,this.cy);
+    }
+    if(this.angry === 3){
+        var seeEntity = this.findEntityInSameLineRight();
+    }
+    if(this.angry === 4){
+        var seeEntity = this.findEntityInSameLineLeft();
+    }
+    if(this.angry !== 0) {
         this.currentSprite = g_sprites.medusa[1];
     };
+    if(this.angry === 0) {
+        this.currentSprite = g_sprites.medusa[0];
+
+    };
+
+    if (seeEntity) {
+        var canSeeThrough = seeEntity.canMedusaKillIt();
+        // If medusa can see through the objects then 
+        // the Viking freezes and is killed     
+        if(canSeeThrough){
+            g_troll_kill.play();
+            seeEntity.isFrozen = true;
+            this.angry = 'killing';
+            this.currentSprite = g_sprites.medusa[2];
+            seeEntity._isDeadNow = true;
+            this.killViking();
+            this.oneShot = 0;
+        }
+    }
     spatialManager.register(this);
 };
+
+
+Medusa.prototype.killViking = function () {
+    if(this.oneShot ===1)entityManager.fireKillStare(this.cx, this.cy, this.direction);
+
+}
 
 // If medusa sees the viking it gets angry
 // called from entityManager
 Medusa.prototype.seesViking = function(vikingCx, vikingCy) {
-    if (vikingCx === this.cx || vikingCy === this.cy){
+    var VikingToTheRight = vikingCx + 32;
+    var VikingToTheLeft = vikingCx - 32;
+    var VikingUp = vikingCy -32;
+    var VikingDown = vikingCy + 32;
+
+
+    if (vikingCx === this.cx && vikingCy< this.cy){
         this.angry =1;
-        if (this.isVikingSafe(vikingCx, vikingCy) === true){
-        };
-        if (this.isVikingSafe(vikingCx, vikingCy) === false){
-            // g_main.gameOver();
-        };
+        this.direction = 'up';
     } 
+    else if (vikingCx === this.cx && vikingCy> this.cy)
+    {
+        this.angry =2;
+        this.direction = 'down';
+    } 
+    else if (vikingCx > this.cx && vikingCy === this.cy){
+        this.angry =3;
+        this.direction = 'right';
+    } 
+    else if (vikingCx < this.cx && vikingCy === this.cy){
+        this.angry =4;
+        this.direction = 'left';
+    } 
+    // If the viking is half way in the way of the medusa
+    else if ((VikingToTheRight >= this.cx) && (VikingToTheLeft<= this.cx) || (VikingUp <= this.cy) && (VikingDown >= this.cy))  {
+        this.angry = 5;
+    }    
+
     else {
         this.angry =0;
     }
 };
 
-// Checks if there is an object between Medusa and the Viking
-// They can't shoot through rocks, blocks, hearts, or other monsters though.
-Medusa.prototype.isVikingSafe = function(vikingCx, vikingCy){
-    var topRightCx;
-    var topRightCy;
-    var isSafe = false;
-    for(var bx = 0; bx < this.currentLevel.character.length; bx++) {
-        for(var by = 0; by < this.currentLevel.character[bx].length; by++) {
-            if(this.currentLevel.character[bx][by]=== '#'||    // block
-            this.currentLevel.character[bx][by]=== 's' ||      // sheep
-            this.currentLevel.character[bx][by]=== 'h') {      // heart
-                //Find the coords for the objects to compare to the Viking and Medusa
-                topRightCx = this.currentLevel.xBase + (this.currentLevel.cellWidth*by);
-                topRightCy = this.currentLevel.yBase + (this.currentLevel.cellHeight*bx);
-                
-                // Check X
-                if ((this.cx === topRightCx) &&
-                (topRightCx === vikingCx)){
-                    if((this.cy < topRightCy) &&
-                    (topRightCy < vikingCy) 
-                    ||
-                    (vikingCy < topRightCy) &&
-                    (topRightCy< this.cy)
-                    ){
-                        isSafe= true;
-                    }
-                }
-                // Check Y
-                else if ( (this.cy === topRightCy) &&
-                    (topRightCy === vikingCy)){
-                    if((this.cx > topRightCx)&&
-                        (topRightCx > vikingCx) ||
-                        (vikingCx > topRightCx) &&
-                        (topRightCx >this.cx)
-                        ){
-                        isSafe =true;
-                    }  
-                }  
-            }
-        }
-    }
-    return isSafe;
-}
+Medusa.prototype.dissapear = function(){
+    this.explodeMedusa = true;
+};
 
 Medusa.prototype.render = function (ctx) {
     // pass my scale into the sprite, for drawing
+    if(this.explodeMedusa){
+        var sprite_base = g_sprites.explode;
+        if(this._animation.Frame > 9) {
+            this.killAllMedusa = true;
+
+        }
+        this.currentSprite = sprite_base[this._animation.Frame];
+        this._animation.Frame +=1;
+    }
     var origScale = 1;
     this.currentSprite.scale = 1;
     this.currentSprite.drawCentredAt(ctx,this.cx,this.cy, this.rotation);

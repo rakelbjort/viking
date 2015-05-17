@@ -1,30 +1,106 @@
-canvas.myCanvas {
-	margin-left: auto;
-    margin-right: auto;
-    display: block;
-}
+
 body {
+	padding:0.5em 0; margin:0 auto; font-family:Calibri, sans-serif; 
+	background-color:#eeecf0;
 	font-family : 'Arial', Arial;
-	color 		: white;
+	color:black;
+	width:1024px;
+	height:90%;
+	text-transform: uppercase;
+
+}
+
+div.wrapper{
+	height:0.5em;
+}
+#myCanvas {
+	margin :0 auto;
+	position: relative;
+	display:block;
+	border:solid black;
+	border-width:0.2em;
+
+
+}
+
+div.logoPhoto {
+	float:left;
+	left: 2em;
+	position: absolute;
+}
+.name{
+	top:0em;
+	left:7em;
+	position: absolute;
+	color:#816c93;
+	letter-spacing: .2em;
+
+}
+.name a{
+
+	text-decoration: none;
+	width: 200px;
+}
+.name a:hover{
+	text-decoration: underline;
+}
+#nav{
+
+	border:solid #816c93;
+	border-width:0.1em 0;
+	width:160px;
+	list-style:none;
+	top:5em;
+	left:1.5em;
+	position: absolute;
+	text-align:left;
+	line-height: 2em;
+	padding-left:10px;
+	letter-spacing: .2em;
+}
+
+div.push { height: 240px; clear: left; }
+
+
+#nav a{
+	text-decoration: none;
+	color:black;
+
+
+}
+#nav a:hover{
+	text-decoration: underline;
+	color:#816c93;
+}
+
+
+.information{
+	position: absolute;
+	left:1.5em;
+	width:170px;
+	line-height:30px;
+	border:solid #816c93;
+	border-width:0.1em 0;
+}
+.information p {
+	padding-left:10px;
+	font-size: 12px;
+	text-transform: none;
+
+}
+
+
+.game_information{
+	position: absolute;
+	right:180px;
+	top:80px;
+	width:10%;
+	line-height:80px;
+	text-align: right;
 }
 
 
 
-.heartCollect {
-	margin 		: 0.2em;
-	color : black;
-	float : left;
-	margin-left : 3em;
-	margin-right: 3em;
 
-}
-.information {
-	margin-left: : 0.2em;
-	margin-top: 1em;
-	color : black;
-	clear:both;
-	float : left;
-	margin-left : 3em;
-	margin-right: 3em;
 
-}
+

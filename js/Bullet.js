@@ -15,29 +15,37 @@ function Bullet(descr) {
 Bullet.prototype = new Entity();
 
 Bullet.prototype.rotation = 0;
-Bullet.prototype.cx = 200;
-Bullet.prototype.cy = 200;
 Bullet.prototype.velX = 10;
 Bullet.prototype.velY = 10;
 
+Bullet.prototype.getRadius = function () {
+    return (this.sprite.width / 4);
+};
+// If bullet hits something then "kill" the bullet
 Bullet.prototype.takeBulletHit = function(){
     this.kill();
-}
-Bullet.prototype.collidable = function(){
+};
+Bullet.prototype.canMoveObject = function(){
     return true;
-
-}
+};
 Bullet.prototype.collectable = function(){
     return false;
-}
+};
+Bullet.prototype.canMedusaSeeThroughThis = function(){
+    return true;
+};
+Bullet.prototype.canSnowballGoThroughObject = function(){
+    return false;
+};
+Bullet.prototype.isDead = function(){
+    return false;
+};
 
 Bullet.prototype.update = function (du) {
     spatialManager.unregister(this);
 
-    if(this._isDeadNow) return entityManager.KILL_ME_NOW;
+    if(this._isDeadNow || this.lifeSpan<0) return entityManager.KILL_ME_NOW;
     this.lifeSpan -= du;
-    if (this.lifeSpan < 0) return entityManager.KILL_ME_NOW;
-
     // direction of the bullet same direction as the Viking
     this.rotation +=1 * du;
     if (this.direction === 'right'){
@@ -60,19 +68,16 @@ Bullet.prototype.update = function (du) {
             // stop drawing the bullet if there is a hit!
             this.takeBulletHit();
         } 
-        return;
     }
-
+    var hitSnowball = this.findHitEntity();
+    if (hitSnowball) {
+        if(hitSnowball.moveableSnowball){
+            hitSnowball.shootSnowballOfScreen(this.direction);
+        }
+    }
     spatialManager.register(this);
-
 };
-
-Bullet.prototype.getRadius = function () {
-    return (this.sprite.width / 2) * 0.9;
-};
-
 Bullet.prototype.render = function (ctx) {
-
     // pass my scale into the sprite, for drawing
     var origScale = 1;
     this.currentSprite.scale = 1;
@@ -80,4 +85,3 @@ Bullet.prototype.render = function (ctx) {
     this.currentSprite.scale = origScale;
     ctx.globalAlpha = 1;
 };
-

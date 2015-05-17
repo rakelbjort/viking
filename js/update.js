@@ -49,17 +49,21 @@ function update(dt) {
 
 // Togglable Pause Mode
 //
-var KEY_PAUSE = 'P'.charCodeAt(0);
+// var KEY_PAUSE = 'P'.charCodeAt(0);
 var KEY_STEP  = 'O'.charCodeAt(0);
 
 var g_isUpdatePaused = false;
 
 function shouldSkipUpdate() {
-    if (eatKey(KEY_PAUSE)) {
-        g_isUpdatePaused = !g_isUpdatePaused;
-    }
+    // if (key(KEY_PAUSE)) {
+    //     g_isUpdatePaused = !g_isUpdatePaused;
+    // }
     if (g_isUpdatePaused) {
+        g_themeSong.pause();
     }
+    else g_themeSong.play();
 
-    return g_isUpdatePaused && !eatKey(KEY_STEP);    
+
+
+    return g_isUpdatePaused  && !eatKey(KEY_STEP);    
 }

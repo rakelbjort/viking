@@ -3,44 +3,98 @@
     <meta charset="UTF-8">
     <title>Lolo</title>
     <link rel="stylesheet" type="text/css" href="lolo.css" >
+    <link rel="shortcut icon" type="image/png" href="favicon.png"/>
+    <script src="jquery-2.1.3.min.js"></script>
+
 	</head>
 	<body>
   	<div class="wrapper">
+      <div class="logoPhoto">
+        <a class="logo" href="https://notendur.hi.is/~rbj5/final_project/lolo.html"><img src="block.png" alt="Game Logo"/></a>
+      </div>
 
-      <p class="heartCollect">Bullets: </p>
+      <p class="name"><a href="https://notendur.hi.is/~rbj5/final_project/lolo.html">Viking quest,</br>journey </br> through Iceland</p>
+      <div>
+        <ul id="nav">
+            <li><a href="https://notendur.hi.is/~rbj5/final_project/lolo.html">GAME</a></li>
+            <!-- <li><a href="#development">DEVELOPMENT</a></li> -->
+            <li><a href="characters.html">CHARACTERS</a></li>
+            <li><a href="story.html">STORY</a></li>
+        </ul>
+      </div>
+      <div class="push"></div>
+      
+      <div class="information">
+        <p>Instructions: 
+        </br>Use the arrows or w-a-s-d to move the viking.
+        </br>Shoot with X. 
+        </br>Collect the hearts and the treasure and walk through the open door.
+        </br> Try shooting the animals!
+        </br>Maybe double shooting them!
+        </br>Restart level with SpaceBar.
+        </br>No animals are hurt during this game!</p>
+      </div>
 
-      <p class="heartCollect"><strong id="heartCollect">0</strong></p>
-      <p class ="information"> Shoot with X </p>
-		
-      <canvas id="myCanvas" width="640" height="640" style="border: 1px solid black;">
+    </div>
+    <!-- <ul id="buttons-generic">
+      <li>
+        <button data-key="40">Down</button>
+      </li>
+    </ul> -->
+    <!-- // <script src="js/gamecontroller.js"></script> 
+
+     <script type='text/javascript'> 
+    //    $( function() { // jQuery *not* required - just be to call onload
+    //     GameController.init(); // Þetta að valda overload?;
+    // } );-->
+    </script>
+    <div class = "game">
+    	<canvas id="myCanvas" width="640" height="640" >
 				Sorry, but your browser does not support the HTML5 canvas tag.
-			</canvas>
-		</div>
-    	<script src="js/global.js"></script>
+		  </canvas>
+    </div>
+    <div class="game_information">
+      <p> Level :  <strong id="levelStatus">0</strong>
+      </br>Bullets :<strong id="heartCollect">0</strong></p>
+    </div>
+   <script>
 
-		<script src="js/util.js"></script>
-		<script src="js/g_keys.js"></script>
-		<script src="js/spatialmanager.js"></script>
-		<script src="js/entityManager.js"></script>
-		<script src="js/Sprite.js"></script>
-    	<script src="js/Entity.js"></script>
-	    <script src="js/Viking.js"></script>
-	    <script src="js/Heart.js"></script>
-	    <script src="js/Border.js"></script>
-	    <script src="js/Door.js"></script>
-	    <script src="js/Tree.js"></script>
-	    <script src="js/Sheep.js"></script>
-	    <script src="js/Medusa.js"></script>
-	    <script src="js/Treasure_Box.js"></script>
-	    <script src="js/Block.js"></script>
-	    <script src="js/Bullet.js"></script>
-	    <script src="js/Background.js"></script>
-	    <script src="js/level.js"></script>
-		<script src="js/update.js"></script>
-		<script src="js/render.js"></script>
-		<script src="js/imagesPreload.js"></script>
-		<script src="js/g_main.js"></script>
-		<script src="js/lolo.js"></script>
+
+  </script>
+
+  <script src="js/global.js"></script>
+	<script src="js/util.js"></script>
+	<script src="js/g_keys.js"></script>
+	<script src="js/spatialmanager.js"></script>
+  <script src="js/entityManager.js"></script>
+	<script src="js/SoundManager.js"></script>
+	<script src="js/Sprite.js"></script>
+	<script src="js/Entity.js"></script>
+    <script src="js/LevelSwitch.js"></script>
+    <script src="js/Viking.js"></script>
+    <script src="js/Heart.js"></script>
+    <script src="js/Border.js"></script>
+    <script src="js/Door.js"></script>
+    <script src="js/Tree.js"></script>
+    <script src="js/Sheep.js"></script>
+    <script src="js/Medusa.js"></script>
+    <script src="js/Treasure_Box.js"></script>
+    <script src="js/Block.js"></script>
+    <script src="js/Bullet.js"></script>
+    <script src="js/Water.js"></script>
+    <script src="js/KillShot.js"></script>
+    <script src="js/Bridge.js"></script>
+    <script src="js/Mountain.js"></script>
+    <script src="js/Lundi.js"></script>
+    <script src="js/Dragon.js"></script>
+    <script src="js/DragonShoot.js"></script>
+    <script src="js/Background.js"></script>
+    <script src="js/level.js"></script>
+	<script src="js/update.js"></script>
+	<script src="js/render.js"></script>
+	<script src="js/imagesPreload.js"></script>
+	<script src="js/g_main.js"></script>
+	<script src="js/lolo.js"></script>
 
 
   </body>

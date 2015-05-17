@@ -66,13 +66,55 @@ Entity.prototype.kill = function () {
     this._isDeadNow = true;
 };
 
+//-----------------------------
+// Check for Medusa Kill
+//-----------------------------
+
+Entity.prototype.findEntityInSameLineAbove = function(){
+    var pos = this.getPos();
+    return spatialManager.findEntityInLineAbove(
+        pos.posX, pos.posY
+    );   
+};
+Entity.prototype.findEntityInSameLineDown = function(){
+    var pos = this.getPos();
+    return spatialManager.findEntityInLineDown(
+        pos.posX, pos.posY
+    );   
+};
+Entity.prototype.findEntityInSameLineRight = function(){
+    var pos = this.getPos();
+    return spatialManager.findEntityInLineRight(
+        pos.posX, pos.posY
+    );   
+};
+Entity.prototype.findEntityInSameLineLeft = function(){
+    var pos = this.getPos();
+    return spatialManager.findEntityInLineLeft(
+        pos.posX, pos.posY
+    );   
+};
+
+
+//----------------------------
+// Check for Dragon kill
+//----------------------------
+Entity.prototype.findEntityInSameLineRightForDragon = function(){
+    var pos = this.getPos();
+    return spatialManager.findEntityInSameLineRightForDragon(
+        pos.posX, pos.posY
+    );   
+};
+//-----------------------------
+// Collision Check
+//-----------------------------
+
 Entity.prototype.findHitEntity = function () {
     var pos = this.getPos();
     return spatialManager.findEntityInRange(
         pos.posX, pos.posY, this.getRadius()
     );
 };
-
 
 // This is just little "convenience wrapper"
 Entity.prototype.isColliding = function () {

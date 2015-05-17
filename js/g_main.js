@@ -70,7 +70,7 @@ g_main.gameOver = function () {
 var KEY_QUIT = 'Q'.charCodeAt(0);
 function requestedQuit() {
     return g_keys[KEY_QUIT];
-}
+};
 
 // Annoying shim for cross-browser compat
 window.requestAnimationFrame = 
@@ -82,7 +82,7 @@ window.requestAnimationFrame =
 // This needs to be a "global" function, for the "window" APIs to callback to
 function mainIterFrame(frameTime) {
     g_main.iter(frameTime);
-}
+};
 
 g_main._requestNextIteration = function () {
     window.requestAnimationFrame(mainIterFrame);
@@ -101,10 +101,10 @@ g_main._debugRender = function (ctx) {
     if (!this._doTimerShow) return;
     
     var y = 350;
-    ctx.fillText('FT ' + this._frameTime_ms, 50, y+10);
-    ctx.fillText('FD ' + this._frameTimeDelta_ms, 50, y+20);
-    ctx.fillText('UU ' + g_prevUpdateDu, 50, y+30); 
-    ctx.fillText('FrameSync ON', 50, y+40);
+    ctx.fillText('FT ' + this._frameTime_ms, 120, y+10);
+    ctx.fillText('FD ' + this._frameTimeDelta_ms, 120, y+20);
+    ctx.fillText('UU ' + g_prevUpdateDu, 120, y+30); 
+    ctx.fillText('FrameSync ON', 120, y+40);
 };
 
 g_main.init = function () {

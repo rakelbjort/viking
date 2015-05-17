@@ -24,10 +24,11 @@ function render(ctx) {
     // if (eatKey(TOGGLE_UNDO_BOX)) g_undoBox = !g_undoBox;
     // if (eatKey(TOGGLE_FLIPFLOP)) g_doFlipFlop = !g_doFlipFlop;
     // if (eatKey(TOGGLE_RENDER)) g_doRender = !g_doRender;
-    if (eatKey(TOGGLE_RESET)) g_doReset =! g_doReset;    
+    if (key(TOGGLE_RESET)) g_doReset =! g_doReset;    
 
     if(g_doReset) {
-        location.reload();
+        resetLevel();
+        g_doReset = false;
     }
 
     // I've pulled the clear out of `renderSimulation()` and into
@@ -49,7 +50,11 @@ function render(ctx) {
     
     //  renderPauseText can be found in utils.js
     //
-    if (g_isUpdatePaused) renderPauseText(ctx);
+    if (g_isUpdatePaused) {
+        renderPauseText(ctx);
+    }
+
+
 
     // This flip-flip mechanism illustrates the pattern of alternation
     // between frames, which provides a crude illustration of whether

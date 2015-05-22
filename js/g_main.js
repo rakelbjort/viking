@@ -46,11 +46,6 @@ g_main._updateClocks = function (frameTime) {
 
 g_main._iterCore = function (dt) {
     
-    // Handle QUIT
-    if (requestedQuit()) {
-        this.gameOver();
-        return;
-    }
     
     gatherInputs();
     update(dt);
@@ -63,13 +58,6 @@ g_main.gameOver = function () {
     this._isGameOver = true;
     console.log("gameOver: quitting...");
 
-};
-
-// Simple voluntary quit mechanism
-//
-var KEY_QUIT = 'Q'.charCodeAt(0);
-function requestedQuit() {
-    return g_keys[KEY_QUIT];
 };
 
 // Annoying shim for cross-browser compat
@@ -96,7 +84,7 @@ g_main._doTimerShow = false;
 
 g_main._debugRender = function (ctx) {
     
-    if (eatKey(TOGGLE_TIMER_SHOW)) this._doTimerShow = !this._doTimerShow;
+    if (key(TOGGLE_TIMER_SHOW)) this._doTimerShow = !this._doTimerShow;
     
     if (!this._doTimerShow) return;
     
@@ -108,12 +96,5 @@ g_main._debugRender = function (ctx) {
 };
 
 g_main.init = function () {
-    
-    // Grabbing focus is good, but it sometimes screws up jsfiddle,
-    // so it's a risky option during "development"
-    //
-    //window.focus(true);
-    // g_ctx.fillStyle = "white";
-
     this._requestNextIteration();
 };

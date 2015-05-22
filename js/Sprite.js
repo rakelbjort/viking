@@ -44,23 +44,18 @@ Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
     // drawImage expects "top-left" coords, so we offset our destination
     // coords accordingly, to draw our sprite centred at the origin
     ctx.drawImage(this.image, this.sx,this.sy,w,h,cx-w/2, cy-h/2,w,h);
-    
     ctx.restore();
 };  
 
 Sprite.prototype.drawWrappedCentredAt = function (ctx, cx, cy, rotation) {
-    
     var sw = g_canvas.width; 
     // Draw primary instance
     this.drawWrappedVerticalCentredAt(ctx, cx, cy, rotation);
-
 };
 
 Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, rotation) {
-
     // Get "screen height"
     var sh = g_canvas.height;
     // Draw primary instance
-    this.drawCentredAt(ctx, cx, cy, rotation);
-    
+    this.drawCentredAt(ctx, cx, cy, rotation);  
 };

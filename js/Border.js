@@ -7,26 +7,28 @@ function Border(descr) {
     // Default sprite
     this.sprite = this.sprite || g_sprites.borders[0];
     this.currentSprite = this.currentSprite || g_sprites.borders[0];
+    this._scale = 1;
 
-    if(currentLevel === level06 || currentLevel === level07 || currentLevel === level08 || 
+    // The Farm
+    if((currentLevel === level01 || currentLevel === level02 || currentLevel === level03 || 
+        currentLevel === level04  || currentLevel === level05) && this.cy<64){
+        this.currentSprite = g_sprites.borders[1];
+    };
+    // Cold Winter
+    if( currentLevel === level06 || currentLevel === level07 || currentLevel === level08 || 
         currentLevel === level09 || currentLevel === level10){
         this.currentSprite = g_sprites.borders[4];
-    }
-    if(currentLevel === runeLevel01 || currentLevel === runeLevel02 || currentLevel === runeLevel03
-        || currentLevel === runeLevel04){
+    };
+    // Rune room
+    if( currentLevel === runeLevel01 || currentLevel === runeLevel02 || 
+        currentLevel === runeLevel03 || currentLevel === runeLevel04){
         this.currentSprite = g_sprites.borders[3];
-    }
-    if(currentLevel === level11 || currentLevel === level12 || currentLevel === level13 || 
+    };
+    // Lagoon
+    if( currentLevel === level11 || currentLevel === level12 || currentLevel === level13 || 
         currentLevel === level14 || currentLevel === level15){
         this.currentSprite = g_sprites.borders[2];
-    }
-    this._scale = 1;
-    this.originalCx = this.cx;
-    this.originalCy = this.cy;
-    if((currentLevel === level01 || currentLevel === level02 || currentLevel === level03 || 
-        currentLevel === level04  || currentLevel === level05) && this.originalCy<64){
-        this.currentSprite = g_sprites.borders[1];
-    }
+    };
 };
 
 Border.prototype = new Entity();
@@ -55,7 +57,7 @@ Border.prototype.isDead = function(){
 };
 Border.prototype.canMedusaKillIt= function(){
     return false;
-}
+};
 // Dragon ball stops if it hits the Border
 Border.prototype.takeDragonHit = function(){
 };
@@ -67,7 +69,6 @@ Border.prototype.update = function (du) {
 
 Border.prototype.render = function (ctx) {
     // pass my scale into the sprite, for drawing
-
     var origScale = 1;
     this.currentSprite.scale = 1;
     this.currentSprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);

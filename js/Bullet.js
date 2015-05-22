@@ -1,6 +1,5 @@
 "use strict";
 
-
 // A generic contructor which accepts an arbitrary descriptor object
 function Bullet(descr) {
     // Common inherited setup logic from Entity
@@ -50,16 +49,16 @@ Bullet.prototype.update = function (du) {
     this.rotation +=1 * du;
     if (this.direction === 'right'){
         this.cx += this.velX * du;
-    }
+    };
     if (this.direction === 'left'){
         this.cx -= this.velX * du
-    }
+    };
     if (this.direction === 'down'){
         this.cy += this.velY * du;
-    }
+    };
     if(this.direction === 'up'){
         this.cy -= this.velY * du;
-    }
+    };
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit;
@@ -67,16 +66,18 @@ Bullet.prototype.update = function (du) {
             canTakeHit.call(hitEntity);
             // stop drawing the bullet if there is a hit!
             this.takeBulletHit();
-        } 
-    }
+        }; 
+    };
+    // If an animal is double shot
     var hitSnowball = this.findHitEntity();
     if (hitSnowball) {
         if(hitSnowball.moveableSnowball){
             hitSnowball.shootSnowballOfScreen(this.direction);
-        }
-    }
+        };
+    };
     spatialManager.register(this);
 };
+
 Bullet.prototype.render = function (ctx) {
     // pass my scale into the sprite, for drawing
     var origScale = 1;

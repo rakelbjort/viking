@@ -6,8 +6,8 @@ function Door(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
     // Default sprite
-    this.sprite = this.sprite || g_sprites.door[0];
-    this.currentSprite = this.currentSprite || g_sprites.door[0];
+    this.sprite = this.sprite || g_sprites.door[2];
+    this.currentSprite = this.currentSprite || g_sprites.door[2];
     // The door is closed when we start the level
     this.doorOpened = false;
 };
@@ -54,14 +54,10 @@ Door.prototype.openDoor = function(){
 
 Door.prototype.render = function (ctx) {
     // pass my scale into the sprite, for drawing
-    // If door is closed 
-    
-        this.currentSprite = g_sprites.door[2];
-    
     // If the door is open
     if (this.doorOpened){
         this.currentSprite = g_sprites.door[3];
-    }
+    };
     var origScale = 1;
     this.currentSprite.scale = 1;
     this.currentSprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);

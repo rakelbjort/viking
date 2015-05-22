@@ -1,6 +1,5 @@
 "use strict";
 
-
 // A generic contructor which accepts an arbitrary descriptor object
 function KillShot(descr) {
     // Common inherited setup logic from Entity
@@ -44,19 +43,19 @@ KillShot.prototype.update = function (du) {
     if (this.direction === 'right'){
         this.currentSprite = g_sprites.bullet_medusa[0];
         this.cx += this.velX * du;
-    }
+    };
     if (this.direction === 'left'){
         this.currentSprite = g_sprites.bullet_medusa[0];
         this.cx -= this.velX * du;
-    }
+    };
     if (this.direction === 'down'){
         this.currentSprite = g_sprites.bullet_medusa[1];
         this.cy += this.velY * du;
-    }
+    };
     if(this.direction === 'up'){
         this.currentSprite = g_sprites.bullet_medusa[1];    
         this.cy -= this.velY * du;
-    }
+    };
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
         var canTakeHit = hitEntity.isDead();
@@ -66,9 +65,9 @@ KillShot.prototype.update = function (du) {
             this.takeBulletHit();
             hitEntity._isDeadNow = true;
 
-        }
+        };
         return;
-    }
+    };
     spatialManager.register(this);
 
 };

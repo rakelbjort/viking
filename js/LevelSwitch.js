@@ -1,6 +1,5 @@
 "use strict";
 
-
 // A generic contructor which accepts an arbitrary descriptor object
 function LevelSwitch(descr) {
     // Common inherited setup logic from Entity
@@ -16,7 +15,6 @@ function LevelSwitch(descr) {
 
 LevelSwitch.prototype = new Entity();
 
-
 LevelSwitch.prototype.update = function (du) {
     spatialManager.unregister(this);
     if(this.killFog) this._isDeadNow = true;
@@ -31,8 +29,8 @@ LevelSwitch.prototype.render = function (ctx) {
     var sprite_base = g_sprites.fog;
     if(this._animation.Frame > 18) {
         this.killFog = true;
-
-    }
+    };
+    
     this.currentSprite = sprite_base[this._animation.Frame];
     this._animation.Frame +=1;
     

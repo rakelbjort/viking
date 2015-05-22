@@ -20,12 +20,7 @@ Heart.prototype.takeBulletHit = function(){
 Heart.prototype.collectable = function(){
     this.kill();
     g_collectingHeart.play();
-
-    // if(currentLevel===level01){
-    //     g_heartCollect +=2;
-    // }
-    // else 
-        g_heartCollect +=1;
+    g_heartCollect +=1;
     return true;
 };
 Heart.prototype.canMoveObject = function(){

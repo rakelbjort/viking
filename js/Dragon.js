@@ -12,7 +12,7 @@ function Dragon(descr) {
     this._scale = 1;
     // One shot at a time
     this.oneShot = 1;
-    // Clear the level
+    // Clear the level of dragons
     this.killAllDragon = false;
     this.explodeDragon = false;
     this._animation = {
@@ -36,7 +36,7 @@ function Dragon(descr) {
     // Destination coords
     this.destinationX;
     this.destinationY;
-    this.moveSpan = 2000 / NOMINAL_UPDATE_INTERVAL
+    this.moveSpan = 2000 / NOMINAL_UPDATE_INTERVAL;
     this.vel = 2.65;
     this.rotation =0;
     this.sizeOfSprite = this.currentSprite.height/2;
@@ -80,7 +80,7 @@ Dragon.prototype.shootSnowballOfScreen = function(direction){
     if(this.stuck) return;
     this.shootSnowball = true;
     // Direction from the Viking
-    this.directionOfShootingBall =direction;
+    this.directionOfShootingBall = direction;
 };
 
 Dragon.prototype.canSnowballGoThroughObject = function(){
@@ -115,22 +115,22 @@ Dragon.prototype.canMoveObject = function(cx,cy,direction){
                 this.cx +=this.sizeOfSprite;
                 this.destinationX = this.cx;
                 this.destinationY = null;
-            }
+            };
             if (this.direction === 'left'){
                 this.cx -=this.sizeOfSprite;
                 this.destinationX = this.cx;
                 this.destinationY = null;
-            }
+            };
             if (this.direction === 'down'){
                 this.cy +=this.sizeOfSprite;
                 this.destinationX = null;
                 this.destinationY = this.cy;
-            }
+            };
             if (this.direction === 'up'){
                 this.cy -=this.sizeOfSprite;
                 this.destinationX = null;
                 this.destinationY = this.cy;
-            }
+            };
             // Check if snowball will hit anything that it can't go through
             var hitEntity = this.findHitEntity();
             if (hitEntity){ 
@@ -139,25 +139,24 @@ Dragon.prototype.canMoveObject = function(cx,cy,direction){
                 if(isCollidable === false ){
                     this.direction =0;
                     this.moveable = false;
-                }
-            }
-        }
+                };
+            };
+        };
         if(this.lifeSpanAsSnowball<20) {
-            this.moveable = false
-        }
+            this.moveable = false;
+        };
         // Return to it's former state
         this.cx = prevX;
         this.cy = prevY;       
     }
-    else {
-        this.moveable = false;
-    }
+    else this.moveable = false;
     spatialManager.register(this);
     return this.moveable;
 };
 
 // Updates the face of dragon
 Dragon.prototype.update = function (du) {
+    // Save previous position
     var prevY = this.cy;
     var prevX = this.cx;
     spatialManager.unregister(this);
@@ -166,10 +165,11 @@ Dragon.prototype.update = function (du) {
     // and the Viking is in the same coords, then viking can move out of the dragon
     if(this.isCollidingWithViking === true){
         this.moveable = true;
-    }
+    };
     if(this.moveableSnowball === false && this.isCollidingWithViking === false){
         this.moveable = false;
-    }
+    };
+
     //-----------------------------------
     // If the Dragon is hit by a bullet
     //-----------------------------------
@@ -177,24 +177,23 @@ Dragon.prototype.update = function (du) {
     if(this._isDeadNow) {
         this.currentSprite = g_sprites.snowball[0];
         this.moveableSnowball = true;
-    }
+    };
     // Turns into a snowball
     if(this.moveableSnowball ){
         this.updateSnowball(du);
-    }
+    };
     // Check if the dragon is colliding with anything
     this.collidingCheck();
 
     // If the Dragon is double shot
     if(this.shootSnowball){
-        this.shootOfScreen(du);
-        
-    }
+        this.shootOfScreen(du);  
+    };
     // If the Dragon goes of the canvas then it's dead
     if(this.cy > canvas.height || this.cy < 0 ||
         this.cx > canvas.width || this.cx <0){
         this.dead = true;
-    }
+    };
 
     //------------------------------------
     // The Dragon is dead! Must revive it!
@@ -211,26 +210,26 @@ Dragon.prototype.update = function (du) {
             this.originalPos();
             // Initialize the countDown
             this.timeToResetDragon = 3000 / NOMINAL_UPDATE_INTERVAL;
-        }
-    }
+        };
+    };
     // The dragon wakes up when all the hearts have been collected
     if(!entityManager._heart.length){
         this.awake = true;
-    }
+    };
 
     // updating sprites, is the dragon facing left or right? is it awake or not ?
     if(this.angry !== 0  && this._isDeadNow === false && this.turning_direction === 'right') {
         this.currentSprite = g_sprites.dragonAwake[0];
-    }
+    };
     if(this.angry === 0 && this._isDeadNow === false && this.turning_direction === 'right') {
         this.currentSprite = g_sprites.dragon[0];
-    }
+    };
     if(this.angry !== 0  && this._isDeadNow === false && this.turning_direction === 'left') {
         this.currentSprite = g_sprites.dragonAwake_toTheLeft[0];
-    }
+    };
     if(this.angry === 0 && this._isDeadNow === false && this.turning_direction === 'left') {
         this.currentSprite = g_sprites.dragon_toTheLeft[0];
-    }
+    };
 
     // Updating the time between dragon balls are shot
     this.timeBetweenShots -= du;
@@ -238,24 +237,22 @@ Dragon.prototype.update = function (du) {
     if(this.shoot){
         this.killViking();
         this.oneShot = 0;
-    }
+    };
 
     if(this.timeBetweenShots<0){   
         this.timeBetweenShots = 2000 / NOMINAL_UPDATE_INTERVAL;
-
         this.oneShot = 1;
-    }
+    };
 
     spatialManager.register(this);
 };
 
 
 Dragon.prototype.killViking = function () {
-
     if(this.oneShot ===1)entityManager.dragonFire(this.cx, this.cy, this.direction);
 };
 
-// If medusa sees the viking it gets angry
+// If Dragon sees the viking it gets angry
 // called from entityManager
 Dragon.prototype.seesViking = function(vikingCx, vikingCy) {
     if(this.awake && this.moveableSnowball === false){
@@ -263,17 +260,17 @@ Dragon.prototype.seesViking = function(vikingCx, vikingCy) {
         if (vikingCx > this.cx && vikingCy === this.cy && this.turning_direction === 'right'){
             this.shoot = true;
             this.direction = 'right';
-        } 
+        }
         else if (vikingCx < this.cx && vikingCy === this.cy && this.turning_direction === 'left'){
             this.shoot = true;
             this.direction = 'left';
-        } 
+        }
         else this.shoot=false;
-    }  
+    } 
 
     else {
         this.angry =0;
-    }
+    };
 };
 
 Dragon.prototype.dissapear = function(){
@@ -290,7 +287,7 @@ Dragon.prototype.updateSnowball = function(du){
     if(this.stuck){
         this.moveable = true;
         this.direction = 0;
-    }
+    };
     this.moveTheSnowball(du);
     // Decrease lifeSpan of the snowball
     this.lifeSpanAsSnowball -= du;
@@ -304,21 +301,21 @@ Dragon.prototype.updateSnowball = function(du){
                 currentLevel === level19 || currentLevel === level20 ){
                     hitEnt.changeSprite = true;
 
-            }
+            };
             hitEnt.collidable = false;
             hitEnt.isFrozen = true;
             hitEnt._isDeadNow = true;
-        }
-    }
+        };
+    };
 
     if(this.lifeSpanAsSnowball<0 && this.stuck){
         // If it's stuck in water then it's dead
         this.dead = true;  
-    }
+    };
     if (this.lifeSpanAsSnowball < 0 && this.stuck === false ) {
         // If it's not stuck in water then it returns to it's dragon state
         this.returnToDragon();
-    }
+    };
 };
 
 //-------------------------
@@ -328,41 +325,33 @@ Dragon.prototype.updateSnowball = function(du){
 Dragon.prototype.moveTheSnowball = function(du){
     if(this.moveable){
         if (this.direction === 'right'){
-            this.moveSpan -=du
             this.rotation +=this.snowballRotation * du;
             this.cx +=this.vel;
             if(this.cx >= this.destinationX) this.cx = this.destinationX;
-
-
-        }
+        };
         if (this.direction === 'left'){
-            this.moveSpan -=du
             this.rotation -=this.snowballRotation * du;
             this.cx -=this.vel;
             if(this.cx <= this.destinationX) this.cx = this.destinationX;
 
-        }
+        };
         if (this.direction === 'down'){
-            this.moveSpan -=du
             this.rotation -=this.snowballRotation* du;
             this.cy +=this.vel;
             if(this.cy >= this.destinationY) this.cy = this.destinationY;
-
-        }
+        };
         if (this.direction === 'up'){
-            this.moveSpan -=du
             this.rotation +=this.snowballRotation * du;
             this.cy -=this.vel;
             if(this.cy <= this.destinationY) this.cy = this.destinationY;
-
-        }
-    }
+        };
+    };
     // Until it reaches its destination coords
     if(this.cx === this.destinationX || this.cy === this.destinationY){
         // Initialize the direction
         this.direction=0;
         this.rotation =0;
-    }
+    };
 };
 
 Dragon.prototype.collidingCheck = function(){
@@ -373,22 +362,21 @@ Dragon.prototype.collidingCheck = function(){
         if(this.direction === 'right'){
             this.destinationX = this.destinationX + this.sizeOfSprite;
             this.checkRight(isCollidable,hitEnt);
-        }
+        };
         if(this.direction === 'left'){
             this.destinationX = this.destinationX - this.sizeOfSprite;
-
             this.checkLeft(isCollidable,hitEnt);
-        }
+        };
         if(this.direction === 'up'){
             this.destinationY = this.destinationY - this.sizeOfSprite;
             this.checkUp(isCollidable,hitEnt);
-        }
+        };
         if(this.direction === 'down'){
             this.destinationY = this.destinationY + this.sizeOfSprite;
             this.checkDown(isCollidable,hitEnt);
-        }   
+        };   
 
-    }
+    };
 };
 
 //-------------------------
@@ -411,7 +399,6 @@ Dragon.prototype.checkLeft = function(isCollidable,hitEnt){
         this.stuck = true;
         this.moveable = true;
     }
-
 };
 Dragon.prototype.checkUp = function (isCollidable,hitEnt){
     if(isCollidable === true && (this.cy <=hitEnt.cy)) {
@@ -419,7 +406,7 @@ Dragon.prototype.checkUp = function (isCollidable,hitEnt){
         hitEnt.collidable = true;
         this.stuck = true;
         this.moveable = true;
-    }
+    };
 };
 Dragon.prototype.checkDown = function (isCollidable,hitEnt){
     if(isCollidable === true && (this.cy >=hitEnt.cy)) {
@@ -427,7 +414,7 @@ Dragon.prototype.checkDown = function (isCollidable,hitEnt){
         hitEnt.collidable = true;
         this.stuck = true;
         this.moveable = true;
-    }
+    };
 };
 
 //-----------------------------
@@ -439,16 +426,16 @@ Dragon.prototype.shootOfScreen = function(du){
     this.moveableSnowball = false;
     if (this.directionOfShootingBall === 'right'){
         this.cx += this.velX *du;
-    }
+    };
     if (this.directionOfShootingBall === 'left'){
         this.cx -= this.velX * du;
-    }
+    };
     if (this.directionOfShootingBall === 'down'){
         this.cy += this.velY * du;
-    }
+    };
     if (this.directionOfShootingBall === 'up'){
         this.cy -= this.velY * du;
-    }
+    };
 };
 
 //-----------------------------
@@ -470,7 +457,6 @@ Dragon.prototype.returnToDragon = function(){
 };
 // Dragon original position in the level
 Dragon.prototype.originalPos = function(){
-    
     this.cx = this.originalCx;
     this.cy = this.originalCy;
 };
@@ -481,17 +467,17 @@ Dragon.prototype.render = function (ctx) {
         var fadeThresh = Dragon.prototype.lifeSpanAsSnowball / 3;  
         if (this.lifeSpanAsSnowball < fadeThresh) {
             ctx.globalAlpha = this.lifeSpanAsSnowball / fadeThresh;
-        }
-    }
+        };
+    };
     if(this.explodeDragon){
         var sprite_base = g_sprites.explode;
         if(this._animation.Frame > 9) {
             this.killAllDragon = true;
 
-        }
+        };
         this.currentSprite = sprite_base[this._animation.Frame];
         this._animation.Frame +=1;
-    }
+    };
 
     // pass my scale into the sprite, for drawing
     var origScale = 1;

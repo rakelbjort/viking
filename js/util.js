@@ -2,11 +2,8 @@
 // UTILS
 // =====
 
-
 function clearCanvas(ctx) {
- //    if(currentLevel === level01){
- //    	    ctx.drawImage(g_images.background_level01, 0, 0, ctx.canvas.width, ctx.canvas.height);
-	// }
+    // What background to use
     if(currentLevel === level06 || currentLevel === level07 || currentLevel === level08 || 
         currentLevel === level09 || currentLevel === level10){
         ctx.drawImage(g_images.background_snow, 0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -24,21 +21,13 @@ function clearCanvas(ctx) {
 	else ctx.drawImage(g_images.background_level01, 0, 0, ctx.canvas.width, ctx.canvas.height);
 };
 
-
-function renderPauseText(ctx) {
-    if (g_isUpdatePaused) {
-        g_pause.render(ctx); 
-    }
-};
-
-
 var util ={
-square: function(x) {
-    return x*x;
-},
-distSq: function(x1, y1, x2, y2) {
-    return this.square(x2-x1) + this.square(y2-y1);
-}
+    square: function(x) {
+        return x*x;
+    },
+    distSq: function(x1, y1, x2, y2) {
+        return this.square(x2-x1) + this.square(y2-y1);
+    }
 };
 
 // =============
@@ -49,7 +38,6 @@ var g_images = {};
 
 var g_collectingHeart = new Audio();
 var g_loadingLevel = new Audio();
-var g_movingObject = new Audio();
 var g_collectingTreasure = new Audio();
 var g_backgroundSoundFirstTheme = new Audio();
 var g_backgroundSoundSecondTheme = new Audio();
@@ -65,32 +53,35 @@ var g_dead_on_water = new Audio();
 var imagesRoot = 'images/64/'
 
 function requestPreloads() {
+    
+    // SOUNDS
 
-    g_collectingHeart.src = 'sounds/171583__fins__3-up-fast-1.wav';
+    g_collectingHeart.src = 'sounds/Heart_collecting.wav';
     g_loadingLevel.src ='sounds/Wind.wav';
-    g_movingObject.src ='sounds/moving.wav';
-    g_collectingTreasure.src ='sounds/HeartCollecting.mp3';
-    g_backgroundSoundFirstTheme.src ="sounds/FirstTheme.wav";
-    g_backgroundSoundSecondTheme.src ="sounds/SecondTheme.wav";
-    g_backgroundSoundThirdTheme.src ="sounds/ThirdTheme.wav";
+    g_collectingTreasure.src ='sounds/Treasure_collecting.mp3';
+    g_backgroundSoundFirstTheme.src ="sounds/first_theme.mp3";
+    g_backgroundSoundSecondTheme.src ="sounds/SecondTheme.mp3";
+    g_backgroundSoundThirdTheme.src ="sounds/ThirdTheme.mp3";
     g_backgroundSoundFourthTheme.src ="sounds/fourth-theme.wav";
-    g_backgroundSoundRuneTheme.src ="sounds/rune-theme.wav";
+    g_backgroundSoundRuneTheme.src ="sounds/rune-theme.mp3";
     g_viking_shoot.src ="sounds/viking_shoots.wav";
     g_troll_kill.src ="sounds/troll_kill.mp3";
     g_dragon_shoot.src ="sounds/dragon_fire.wav";
     g_dead_on_water.src ="sounds/dead_on_water.wav";
 
+    // IMAGES
+
     var requiredImages = {
-        background_level01 : imagesRoot + 'test_background_grass.jpg',
+        background_level01 : imagesRoot + 'background_grass.jpg',
         background_dark : imagesRoot + 'background_dark.png',
         background_snow : imagesRoot + 'background_snow.png',
         background_blueLagoon : imagesRoot + 'background_blueLagoon.png',
         background_runes : imagesRoot + 'background_runes.png',
-        fog : imagesRoot + 'fogtest.png',
+        fog : imagesRoot + 'fog.png',
         vikingDown   : imagesRoot + "Viking_64_front_spriteSheet.png",
-        vikingUp : imagesRoot + 'Viking_64_back_sprite.png',
-        vikingLeft : imagesRoot + 'Viking_64_turnleft_sprite.png',
-        vikingRight: imagesRoot + 'Viking_64_turnright_sprite.png',
+        vikingUp : imagesRoot + 'Viking_64_back_spriteSheet.png',
+        vikingLeft : imagesRoot + 'Viking_64_turnleft_spriteSheet.png',
+        vikingRight: imagesRoot + 'Viking_64_turnright_spriteSheet.png',
         heart : imagesRoot +'heart_64.png',
         borders_level01 : imagesRoot +'border.png',
         borders_houses : imagesRoot +'borders_house.png',
@@ -99,20 +90,20 @@ function requestPreloads() {
         borders_snow : imagesRoot +'border_snow.png',
         door : imagesRoot +'door_64_sprite.png',
         door_gate : imagesRoot +'door_gate.png',
-        tree: imagesRoot +'Tree_64.png',
-        tree_dark : imagesRoot + 'Tree_no_leafs_64.png',
+        tree: imagesRoot +'tree_64.png',
+        tree_dark : imagesRoot + 'tree_no_leafs_64.png',
         sheep: imagesRoot + 'sheep_64_spriteSheet.png',
-        polar_bear: imagesRoot + 'polarBear.png',
-        medusa : imagesRoot +'Troll_64_sprite.png',
-        treasure_box_all : imagesRoot + 'Treasure_Box_All.png',
+        polar_bear: imagesRoot + 'polarBear_64_spriteSheet.png',
+        medusa : imagesRoot +'troll_64_sprite.png',
+        treasure_box_all : imagesRoot + 'treasure_box_all.png',
         runes_all : imagesRoot + 'rune_all.png',
         block : imagesRoot + 'block.png',
-        bullet : imagesRoot + 'Bullet.png',
-        snowball : imagesRoot + 'snoball.png',
+        bullet : imagesRoot + 'bullet.png',
+        snowball : imagesRoot + 'snowball.png',
         water : imagesRoot + 'water.png',
         blue_lagoon_water : imagesRoot + 'blue_lagoon_water.png',
         lava: imagesRoot + 'lava_64.png',
-        frozen_viking: imagesRoot + 'Frozen_Viking.png',
+        frozen_viking: imagesRoot + 'frozen_viking.png',
         fire_viking: imagesRoot + 'Viking_onfire.png',
         bullet_medusa : imagesRoot + 'killShot.png',
         bridge : imagesRoot + 'bridge.png',
@@ -203,8 +194,6 @@ function preloadDone() {
         2:new Sprite(g_images.rocks,spriteSize,spriteSize,0,0),
         3:new Sprite(g_images.borders_dark,spriteSize,spriteSize,0,0),
         4:new Sprite(g_images.borders_snow,spriteSize,spriteSize,0,0)
-
-
     };
     g_sprites.door ={
         0:new Sprite(g_images.door,spriteSize,spriteSize,0,0),
@@ -250,7 +239,6 @@ function preloadDone() {
         4:new Sprite(g_images.treasure_box_all,spriteSize,spriteSize,spriteSize*4,0),
         5:new Sprite(g_images.treasure_box_all,spriteSize,spriteSize,spriteSize*5,0),
         6:new Sprite(g_images.treasure_box_all,spriteSize,spriteSize,spriteSize*6,0),
-
     };
     g_sprites.runes_all = {
         0:new Sprite(g_images.runes_all,spriteSize,spriteSize,0,0),
@@ -276,7 +264,6 @@ function preloadDone() {
         4:new Sprite(g_images.water,spriteSize,spriteSize,spriteSize*4,0),
         5:new Sprite(g_images.water,spriteSize,spriteSize,spriteSize*5,0),
         6:new Sprite(g_images.water,spriteSize,spriteSize,spriteSize*6,0)
-        
     };
     g_sprites.lava = {
         0:new Sprite(g_images.lava,spriteSize,spriteSize,0,0),
@@ -461,8 +448,6 @@ function preloadDone() {
 
         18:new Sprite(g_images.fog,bigSpriteSize,bigSpriteSize,0,bigSpriteSize*6),
         19:new Sprite(g_images.fog,bigSpriteSize,bigSpriteSize,bigSpriteSize,bigSpriteSize*6)
-        
-
     };
     g_sprites.background_level01 ={
         0:new Sprite(g_images.background_level01,bigSpriteSize,bigSpriteSize,0,0)
@@ -472,11 +457,7 @@ function preloadDone() {
     };
 
     entityManager.init();
-
     createInitialEverything(currentLevel);
-
     createWater(currentLevel);
-
-
     mainInit();
 };

@@ -1,13 +1,12 @@
 "use strict";
 
-
 // A generic contructor which accepts an arbitrary descriptor object
 function Sheep(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
     // Default sprite
     this.sprite = this.sprite || g_sprites.sheep[0];
-    this.currentSprite = this.currentSprite ||g_sprites.sheep[0]
+    this.currentSprite = this.currentSprite ||g_sprites.sheep[0];
     this._scale = 1;
     // Looking at the viking
     this.lookingDirection=0;
@@ -36,9 +35,6 @@ function Sheep(descr) {
         Ticker:0
     }; 
     this.isCollidingWithViking = false;
-    this.vikingCx;
-    this.vikingCy;
-
 };
 
 Sheep.prototype = new Entity();
@@ -112,22 +108,22 @@ Sheep.prototype.canMoveObject = function(cx,cy,direction){
                 this.cx +=this.sizeOfSprite;
                 this.destinationX = this.cx;
                 this.destinationY = null;
-            }
+            };
             if (this.direction === 'left'){
                 this.cx -=this.sizeOfSprite;
                 this.destinationX = this.cx;
                 this.destinationY = null;
-            }
+            };
             if (this.direction === 'down'){
                 this.cy +=this.sizeOfSprite;
                 this.destinationX = null;
                 this.destinationY = this.cy;
-            }
+            };
             if (this.direction === 'up'){
                 this.cy -=this.sizeOfSprite;
                 this.destinationX = null;
                 this.destinationY = this.cy;
-            }
+            };
             // Check if snowball will hit anything that it can't go through
             var hitEntity = this.findHitEntity();
             if (hitEntity){ 
@@ -136,29 +132,20 @@ Sheep.prototype.canMoveObject = function(cx,cy,direction){
                 if(isCollidable === false ){
                     this.direction =0;
                     this.moveable = false;
-                }
-            }
-        }
-        if(this.lifeSpanAsSnowball<20) {
-            this.moveable = false
-        }
+                };
+            };
+        };
+        if(this.lifeSpanAsSnowball<20)this.moveable = false
+    
         // Return to it's former state
         this.cx = prevX;
         this.cy = prevY;       
     }
-    else {
-        this.moveable = false;
-    }
+    else this.moveable = false;
+
     spatialManager.register(this);
     return this.moveable;
 };
-
-
-Sheep.prototype.positionOfViking = function(vikingCx,vikingCy){
-    this.vikingCx = vikingCx;
-    this.vikingCy = vikingCy;
-}
-
 
 Sheep.prototype.update = function (du) {
     var prevY = this.cy;
@@ -208,7 +195,6 @@ Sheep.prototype.update = function (du) {
 
     if(this.dead){
         // move it outside the canvas, just for a little while!
-
         this.cx = -this.currentSprite.width;
         this.cy = -this.currentSprite.height;
         this.returnToSheep();
@@ -218,8 +204,8 @@ Sheep.prototype.update = function (du) {
             this.originalPos();
             // Initialize the countDown
             this.timeToResetSheep = 3000 / NOMINAL_UPDATE_INTERVAL;
-        }
-    }
+        };
+    };
     spatialManager.register(this) 
 };
 
@@ -234,40 +220,30 @@ Sheep.prototype.lookingAtViking = function(vikingCx, vikingCy) {
     var sheepToTheRight = this.cx + this.sizeOfSprite;
     var sheepOnTop = this.cy - this.sizeOfSprite;
     var sheepOnBottom = this.cy + this.sizeOfSprite;
-    // console.log('cx hnit : ' + this.cx);
-    // console.log('vinstri : ' + sheepToTheLeft);
-    // console.log('hægri  : ' + sheepToTheRight);
 
     if( (this.cy > vikingCy) && 
-        (this.cx === vikingCx || (sheepToTheLeft<= vikingCx && vikingCx<= sheepToTheRight)))
-        {
+        (this.cx === vikingCx || (sheepToTheLeft<= vikingCx && vikingCx<= sheepToTheRight))){
             this.lookingDirection = 'up';
-        }
+    }
     else if( (this.cy < vikingCy) && 
-        (this.cx === vikingCx || (sheepToTheLeft<= vikingCx && vikingCx<= sheepToTheRight)))
-        {
+        (this.cx === vikingCx || (sheepToTheLeft<= vikingCx && vikingCx<= sheepToTheRight))){
         this.lookingDirection = 'down';
-        }
+    }
 
     else if( (this.cx > vikingCx) && 
-        (this.cy === vikingCy || (sheepOnTop<= vikingCy && vikingCy<= sheepOnTop)))
-        {
+        (this.cy === vikingCy || (sheepOnTop<= vikingCy && vikingCy<= sheepOnTop))){
             this.lookingDirection = 'left';
-        }
+    }
     else if( (this.cx < vikingCx) && 
-        (this.cy === vikingCy || (sheepOnTop<= vikingCy && vikingCy<= sheepOnTop)))
-        {
+        (this.cy === vikingCy || (sheepOnTop<= vikingCy && vikingCy<= sheepOnTop))){
             this.lookingDirection = 'right';
-        }
-    
+    }
     else if(sheepToTheLeft> vikingCx && sheepOnTop>= vikingCy){
         this.lookingDirection ='up-left';
-    }    
-    
+    }     
     else if(sheepToTheLeft> vikingCx && sheepOnBottom<= vikingCy){
         this.lookingDirection ='down-left';
     }
-    
     else if(sheepToTheRight< vikingCx && sheepOnTop>= vikingCy){
         this.lookingDirection ='up-right';
     }
@@ -328,7 +304,7 @@ Sheep.prototype.updateEyes = function(){
         if(this.lookingDirection === 'down-left') {
             this.currentSprite = g_sprites.polar_bear[7];
         };
-    }
+    };
 
 };
 
@@ -340,14 +316,9 @@ Sheep.prototype.updateEyes = function(){
 Sheep.prototype.updateSnowball = function(du){
     if(this.stuck){
         this.direction = 0;
-        // console.log('vikingur x : ' + this.vikingCx);
-        // console.log('vikingur y : ' + this.vikingCy);
-        // console.log('kind x : ' + this.cx);
-        // console.log('kind y : ' + this.cy);
-
-            this.moveable = true;
-        
+        this.moveable = true;
     }
+
     this.moveTheSnowball(du);
     // Decrease lifeSpan of the snowball
     this.lifeSpanAsSnowball -= du;
@@ -361,21 +332,21 @@ Sheep.prototype.updateSnowball = function(du){
                 currentLevel === level19 || currentLevel === level20 ){
                             hitEnt.changeSprite = true;
 
-            }
+            };
             hitEnt.collidable = false;
             hitEnt.isFrozen = true;
             hitEnt._isDeadNow = true;
-        }
-    }
+        };
+    };
 
     if(this.lifeSpanAsSnowball<0 && this.stuck){
         // If it's stuck in water then it's dead
         this.dead = true;  
-    }
+    };
     if (this.lifeSpanAsSnowball < 0 && this.stuck === false ) {
         // If it's not stuck in water then it returns to it's sheep state
         this.returnToSheep();
-    }
+    };
 };
 
 //-------------------------
@@ -384,47 +355,34 @@ Sheep.prototype.updateSnowball = function(du){
 
 Sheep.prototype.moveTheSnowball = function(du){
     if(this.moveable){
-
         if (this.direction === 'right'){
-            // g_movingObject.play();
-            this.moveSpan -=du
             this.rotation +=this.snowballRotation * du;
             this.cx +=this.vel;
             if(this.cx >= this.destinationX) this.cx = this.destinationX;
-
-
-        }
+        };
         if (this.direction === 'left'){
-            // g_movingObject.play();
-            this.moveSpan -=du
             this.rotation -=this.snowballRotation * du;
             this.cx -=this.vel;
             if(this.cx <= this.destinationX) this.cx = this.destinationX;
 
-        }
+        };
         if (this.direction === 'down'){
-            // g_movingObject.play();
-            this.moveSpan -=du
             this.rotation -=this.snowballRotation* du;
             this.cy +=this.vel;
             if(this.cy >= this.destinationY) this.cy = this.destinationY;
-
-        }
+        };
         if (this.direction === 'up'){
-            // g_movingObject.play();
-            this.moveSpan -=du
             this.rotation +=this.snowballRotation * du;
             this.cy -=this.vel;
             if(this.cy <= this.destinationY) this.cy = this.destinationY;
-
-        }
-    }
+        };
+    };
     // Until it reaches its destination coords
     if(this.cx === this.destinationX || this.cy === this.destinationY){
         // Initialize the direction
         this.direction=0;
         this.rotation =0;
-    }
+    };
 };
 
 Sheep.prototype.collidingCheck = function(){
@@ -435,22 +393,21 @@ Sheep.prototype.collidingCheck = function(){
         if(this.direction === 'right'){
             this.destinationX = this.destinationX + this.sizeOfSprite;
             this.checkRight(isCollidable,hitEnt);
-        }
+        };
         if(this.direction === 'left'){
             this.destinationX = this.destinationX - this.sizeOfSprite;
 
             this.checkLeft(isCollidable,hitEnt);
-        }
+        };
         if(this.direction === 'up'){
             this.destinationY = this.destinationY - this.sizeOfSprite;
             this.checkUp(isCollidable,hitEnt);
-        }
+        };
         if(this.direction === 'down'){
             this.destinationY = this.destinationY + this.sizeOfSprite;
             this.checkDown(isCollidable,hitEnt);
-        }   
-
-    }
+        };  
+    };
 };
 
 //-------------------------
@@ -464,7 +421,7 @@ Sheep.prototype.checkRight = function(isCollidable,hitEnt){
         hitEnt.collidable = true;
         this.stuck = true;
         this.moveable = true;
-    }
+    };
 };
 Sheep.prototype.checkLeft = function(isCollidable,hitEnt){
     if(isCollidable === true && (this.cx < hitEnt.cx)) {
@@ -472,7 +429,7 @@ Sheep.prototype.checkLeft = function(isCollidable,hitEnt){
         hitEnt.collidable = true;
         this.stuck = true;
         this.moveable = true;
-    }
+    };
 
 };
 Sheep.prototype.checkUp = function (isCollidable,hitEnt){
@@ -481,7 +438,7 @@ Sheep.prototype.checkUp = function (isCollidable,hitEnt){
         hitEnt.collidable = true;
         this.stuck = true;
         this.moveable = true;
-    }
+    };
 };
 Sheep.prototype.checkDown = function (isCollidable,hitEnt){
     if(isCollidable === true && (this.cy >=hitEnt.cy)) {
@@ -489,28 +446,27 @@ Sheep.prototype.checkDown = function (isCollidable,hitEnt){
         hitEnt.collidable = true;
         this.stuck = true;
         this.moveable = true;
-    }
+    };
 };
 
 //-----------------------------
 // If the Sheep is double shot
 //-----------------------------
 
-
 Sheep.prototype.shootOfScreen = function(du){
     this.moveableSnowball = false;
     if (this.directionOfShootingBall === 'right'){
         this.cx += this.velX *du;
-    }
+    };
     if (this.directionOfShootingBall === 'left'){
         this.cx -= this.velX * du;
-    }
+    };
     if (this.directionOfShootingBall === 'down'){
         this.cy += this.velY * du;
-    }
+    };
     if (this.directionOfShootingBall === 'up'){
         this.cy -= this.velY * du;
-    }
+    };
 };
 
 //-----------------------------
@@ -534,27 +490,20 @@ Sheep.prototype.returnToSheep = function(){
     else this.currentSprite = g_sprites.sheep[0];
     this._isDeadNow = false;
     this.rotation =0;
-
 };
 // Sheeps original position in the level
 Sheep.prototype.originalPos = function(){
-
     this.cx = this.originalCx;
     this.cy = this.originalCy;
-
 };
-
 
 //-------------------------
 // When the Viking collects 
 // the treasure
 //-------------------------
 
-
 Sheep.prototype.dissapear = function(){
-    // this.moveableSnowball = true;
     this.explodeSheep = true;
-    // this.killAllSheep = true;
 };
 
 Sheep.prototype.render = function (ctx) {
@@ -563,18 +512,16 @@ Sheep.prototype.render = function (ctx) {
         var fadeThresh = Sheep.prototype.lifeSpanAsSnowball / 3;  
         if (this.lifeSpanAsSnowball < fadeThresh) {
             ctx.globalAlpha = this.lifeSpanAsSnowball / fadeThresh;
-        }
-    }
+        };
+    };
     if(this.explodeSheep){
         var sprite_base = g_sprites.explode;
         if(this._animation.Frame > 9) {
             this.killAllSheep = true;
-
-        }
+        };
         this.currentSprite = sprite_base[this._animation.Frame];
         this._animation.Frame +=1;
-    }
-
+    };
 
     // pass my scale into the sprite, for drawing
     var origScale = 1;

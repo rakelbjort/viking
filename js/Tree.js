@@ -22,7 +22,6 @@ function Tree(descr) {
 
 Tree.prototype = new Entity();
 
-
 Tree.prototype.getRadius = function () {
     return (this.sprite.width / 2) ;
 };
@@ -48,7 +47,6 @@ Tree.prototype.canMedusaKillIt = function(){
 };
 Tree.prototype.update = function (du) {
     spatialManager.unregister(this);
-    
     spatialManager.register(this);
 };
 Tree.prototype.canSnowballGoThroughObject = function(){
@@ -57,13 +55,8 @@ Tree.prototype.canSnowballGoThroughObject = function(){
 
 Tree.prototype.render = function (ctx) {
     // pass my scale into the sprite, for drawing
-
     var origScale = 1;
     this.currentSprite.scale = 1;
     this.currentSprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
     this.currentSprite.scale = origScale;
-    // var origScale = 1;
-    // this.sprite.scale = 1;
-    // this.sprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
-    // this.sprite.scale = origScale;
 };

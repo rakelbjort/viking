@@ -1,15 +1,8 @@
 // =======
 // GLOBALS
 // =======
-/*
-
-Evil, ugly (but "necessary") globals, which everyone can use.
-
-*/
 
 "use strict";
-
-
 // The "nominal interval" is the one that all of our time-based units are
 // calibrated to e.g. a velocity unit is "pixels per nominal interval"
 //

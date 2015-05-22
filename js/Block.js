@@ -13,20 +13,20 @@ function Block(descr) {
     this.destinationY;
     this.itIsMoving= false;
     this.vel = 2.65;
-    this.moveSpan = 1000 / NOMINAL_UPDATE_INTERVAL
+    this.moveSpan = 1000 / NOMINAL_UPDATE_INTERVAL;
 };
 
 Block.prototype = new Entity();
 
 Block.prototype.getRadius = function () {
-    return (this.sprite.width / 2) ;
+    return (this.sprite.width / 2);
 };
 // Bullet stops if it hits the Block
 Block.prototype.takeBulletHit = function(){
 };
 // Can't collect Blocks
 Block.prototype.collectable = function(){
-    return false
+    return false;
 };
 // Can block Medusa killer-stare
 Block.prototype.canMedusaSeeThroughThis = function(){
@@ -62,35 +62,34 @@ Block.prototype.canMoveObject = function(cx,cy,direction){
             this.cx +=this.sprite.width/2;
             this.destinationX = this.cx;
             this.destinationY = null;
-        }
+        };
         if (this.direction === 'left'){
             this.cx -=this.sprite.width/2;
             this.destinationX = this.cx;
             this.destinationY = null;
-
-        }
+        };
         if (this.direction === 'down'){
             this.cy +=this.sprite.width/2;
             this.destinationY = this.cy;
             this.destinationX = null;
-        }
+        };
         if (this.direction === 'up'){
             this.cy -=this.sprite.width/2;
             this.destinationY = this.cy;
             this.destinationX = null;
-        }
+        };
         
         var hitEntity = this.findHitEntity();
         if (hitEntity) {
             this.moveable = false;
-        }
+        };
 
         // Return to its former position
         this.cx = prevX;
         this.cy = prevY;       
         spatialManager.register(this);
     }
-    else{this.moveable = false}
+    else this.moveable = false;
 
     return this.moveable;
 };
@@ -102,39 +101,32 @@ Block.prototype.update = function (du) {
         var prevY = this.cy;
         var prevX = this.cx;
         if (this.direction === 'right'){
-            this.moveSpan -=du;
             this.cx += this.vel;
             if(this.cx >= this.destinationX) this.cx = this.destinationX;
-
-        }
+        };
         if (this.direction === 'left'){
-            this.moveSpan -=du;
             this.cx -= this.vel;
             if(this.cx <= this.destinationX) this.cx = this.destinationX;
-
-        }
+        };
         if (this.direction === 'down'){
-            this.moveSpan -=du;
             this.cy += this.vel;
             if(this.cy >= this.destinationY) this.cy = this.destinationY;
-        }
+        };
         if (this.direction === 'up'){
-            this.moveSpan -=du;
             this.cy -= this.vel;
             if(this.cy <= this.destinationY) this.cy = this.destinationY;
-
-        }
+        };
         if(this.cx === this.destinationX || this.cy === this.destinationY){
             this.direction = 0;
-        }
+        };
         
         var hitEntity = this.findHitEntity();
         if (hitEntity) {
             this.moveable = false;
             this.cx = prevX;
             this.cy = prevY;
-        }
-    }
+        };
+    };
     spatialManager.register(this);
 };
 

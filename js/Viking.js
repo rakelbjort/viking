@@ -12,7 +12,6 @@ function Viking(descr) {
         Frame:1,
         Ticker:0
     };  
-    // this.currentLevel = background_level01;
     this.direction = 'down';
     // Viking frozen and dead
     this.isFrozen = false;
@@ -25,10 +24,10 @@ function Viking(descr) {
     // Original position of the viking
     this.originalCx = this.cx;
     this.originalCy = this.cy;
+    // Is he killed by lava or water?
+    // Medusa or Dragon ? if it's lava or
+    // Dragon, then change it
     this.changeSprite = false;
-
-
-
 };
 
 Viking.prototype = new Entity();
@@ -57,7 +56,7 @@ Viking.prototype.NEXT_LEVEL = KEY_N;
 Viking.prototype.vel = 2.65; 
 
 // Shoot snowballs
-Viking.prototype.FIRE =  KEY_X;
+Viking.prototype.FIRE = KEY_X;
 // Used for countdown for reloading the level when Viking dies
 Viking.prototype.lifeSpanThenReload = 1000 / NOMINAL_UPDATE_INTERVAL;
 Viking.prototype.moveSpan = 1000 / NOMINAL_UPDATE_INTERVAL;
@@ -97,7 +96,6 @@ Viking.prototype.update = function (du) {
     for (var i = 0; i < steps; ++i) {
         this.computeSubStep(dStep);
     }
-
     //Rembering the last position
     var prevX = this.cx;
     var prevY = this.cy;
@@ -137,15 +135,10 @@ Viking.prototype.update = function (du) {
                 // Viking goes one cell right
                 else if ((eatKey(this.GO_RIGHT) || eatKey(this.GO_RIGHT_D))){
                     this.tryGoRight(prevDirection,prevX,prevY);
-
-                }            
+                }           
                 this.threshold -= this.threshold;
-
             }
-
-
         }
-
         if(this.itIsMoving){
             // Move the Viking 
             this.moveViking(du);
@@ -154,9 +147,8 @@ Viking.prototype.update = function (du) {
     if(key(this.NEXT_LEVEL)){
         nextLevel();
         this._isDeadNow = true;
-    }
+    };
     if(this._isDeadNow === false ) spatialManager.register(this);
-
 }; 
 
 //-------------------------
@@ -164,18 +156,17 @@ Viking.prototype.update = function (du) {
 // move the viking!
 //-------------------------
 
-
 Viking.prototype.tryToGoLeft = function(prevDirection,prevX,prevY){
     this.itIsMoving = true;
     this.direction = 'left';
     if(prevDirection !== this.direction){
         this.itIsMoving =false;
-    }
+    };
     this.collisionDetectionForObjects(this.cx - this.sizeOfSprite, this.cy)
     if(this.itIsMoving){
         this.destinationX = this.cx - this.sizeOfSprite;
         this.destinationY = null;
-    }
+    };
 };
 
 Viking.prototype.tryGoRight = function(prevDirection,prevX,prevY){
@@ -183,77 +174,70 @@ Viking.prototype.tryGoRight = function(prevDirection,prevX,prevY){
     this.direction = 'right';
     if(prevDirection !== this.direction){
         this.itIsMoving =false;
-    }
+    };
     this.collisionDetectionForObjects(this.cx + this.sizeOfSprite, this.cy)
     if(this.itIsMoving){
         this.destinationX = this.cx + this.sizeOfSprite;
         this.destinationY= null;
-    }
+    };
 };
 Viking.prototype.tryGoUp = function (prevDirection,prevX,prevY){
     this.itIsMoving = true;
     this.direction = 'up';
     if(prevDirection !== this.direction){
         this.itIsMoving =false;
-    }
+    };
     this.collisionDetectionForObjects(this.cx, this.cy - this.sizeOfSprite)
     if(this.itIsMoving){
         this.destinationX= null;
         this.destinationY = this.cy - this.sizeOfSprite;
-    }
+    };
 };
 Viking.prototype.tryGoDown = function(prevDirection,prevX,prevY){
     this.itIsMoving = true;
     this.direction = 'down';
     if(prevDirection !== this.direction){
         this.itIsMoving =false;
-    }
+    };
     this.collisionDetectionForObjects(this.cx, this.cy + this.sizeOfSprite);
     if(this.itIsMoving){
         this.destinationX = null;
         this.destinationY = this.cy + this.sizeOfSprite;
-    }
+    };
 };
 
 Viking.prototype.moveViking = function (du){
     if (this.direction === 'down' && this.itIsMoving){
         this.cy += this.vel;
         if(this.cy >= this.destinationY) this.cy = this.destinationY;
-    }
+    };
     if (this.direction === 'up' && this.itIsMoving){
         this.cy -= this.vel;
         if(this.cy <= this.destinationY) this.cy = this.destinationY;
-
-    }
+    };
     if (this.direction === 'left' && this.itIsMoving){
         this.cx -= this.vel;
         if(this.cx <= this.destinationX) this.cx = this.destinationX;
-
-    }
+    };
     if (this.direction === 'right' && this.itIsMoving){
         this.cx += this.vel;
         if(this.cx >= this.destinationX) this.cx = this.destinationX;
-    }
+    };
     // move Viking until it reaches it's destination
     if (this.cy === this.destinationY || this.cx === this.destinationX) {
         this._animation.Frame = 1;
         this.itIsMoving = false;
-    }
-
+    };
 };
-
 
 //-------------------------
 // Collision detection
 //-------------------------
 
-
-
 Viking.prototype.collisionDetectionForObjects = function(cx,cy){
     var entityInSpace = spatialManager.findEntityInRange(
     cx, cy, this.getRadius());
-    if (entityInSpace)
-        {
+    if (entityInSpace){
         // If it collides with anything that is not moveable or 
         // collectable then the Viking doesn't move
         var isCollectable = entityInSpace.collectable();
@@ -264,14 +248,12 @@ Viking.prototype.collisionDetectionForObjects = function(cx,cy){
 
         if(isCollectableTreasure) {
             if (entityInSpace.collectableTreasure() && entityInSpace.treasureGone === false){
-                    g_collectingTreasure.play();
-
+                g_collectingTreasure.play();
                 entityInSpace.treasureGone = true;
             }
         }
         if(isCollidingWithOpenDoor){
             if(entityInSpace.doorIsOpen()){
-
                 nextLevel();
                 this._isDeadNow = true; 
             }
@@ -281,8 +263,7 @@ Viking.prototype.collisionDetectionForObjects = function(cx,cy){
         }
         if(isCollidable === true || isCollectable === true) {
             this.itIsMoving = true;
-            }
-        
+        }
         else {
             this.itIsMoving = false;
         }
@@ -314,14 +295,13 @@ Viking.prototype.computeSubStep = function (du){
             else{
             this.currentSprite = g_sprites.viking.down[0];
             }
-
         }
     }
 
     if(this.isFrozen){
-
         // If the Viking is frozen/dead then change to the 
         // Viking-frozen-sprite and reload the level after countDown
+        // If its killed by lava or dragon we switch sprites
         if(this.changeSprite === true){
             this.currentSprite = g_sprites.frozen_viking[1];
         }
@@ -329,10 +309,8 @@ Viking.prototype.computeSubStep = function (du){
         this.lifeSpanThenReload -= du;
         if(this.lifeSpanThenReload < 45){
             g_dead_on_water.play();
-
         }
         if (this.lifeSpanThenReload < 0) {
-
             resetLevel();
         }
     }

@@ -7,9 +7,11 @@ function Bridge(descr) {
     // Default sprite
     this.sprite = this.sprite || g_sprites.bridge[0];
     this._scale = 1;
-    if(currentLevel === level06 || currentLevel === level07|| currentLevel === level14){
-            this.sprite = g_sprites.bridge[1];
-    }
+    // In which direction is the bridge facing
+    if( currentLevel === level06 || currentLevel === level07 || 
+        currentLevel === level12||currentLevel === level14){
+        this.sprite = g_sprites.bridge[1];
+    };
 };
 
 Bridge.prototype = new Entity();
@@ -18,7 +20,7 @@ Bridge.prototype.getRadius = function () {
     return (this.sprite.width / 4);
 };
 Bridge.prototype.canMoveObject = function(cx,cy,direction){
-    if(this.cx === cx || this.cy === cy) return true
+    if(this.cx === cx || this.cy === cy) return true;
     else return false;
 };
 Bridge.prototype.collectable = function(){
@@ -43,7 +45,6 @@ Bridge.prototype.update = function (du) {
 
 Bridge.prototype.render = function (ctx) {
     // pass my scale into the sprite, for drawing
-
     var origScale = 1;
     this.sprite.scale = 1;
     this.sprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);

@@ -30,7 +30,7 @@ Medusa.prototype.canMoveObject = function(){
     return false;
 };
 Medusa.prototype.collectable = function(){
-    return false
+    return false;
 };
 Medusa.prototype.canMedusaSeeThroughThis = function(){
     return false;
@@ -55,22 +55,21 @@ Medusa.prototype.update = function (du) {
     // Which direction is it trying to kill the Viking
     if(this.angry === 1){
         var seeEntity = this.findEntityInSameLineAbove();
-    }
+    };
     if(this.angry === 2){
-        var seeEntity = this.findEntityInSameLineDown(this.cx,this.cy);
-    }
+        var seeEntity = this.findEntityInSameLineDown();
+    };
     if(this.angry === 3){
         var seeEntity = this.findEntityInSameLineRight();
-    }
+    };
     if(this.angry === 4){
         var seeEntity = this.findEntityInSameLineLeft();
-    }
+    };
     if(this.angry !== 0) {
         this.currentSprite = g_sprites.medusa[1];
     };
     if(this.angry === 0) {
         this.currentSprite = g_sprites.medusa[0];
-
     };
 
     if (seeEntity) {
@@ -85,15 +84,14 @@ Medusa.prototype.update = function (du) {
             seeEntity._isDeadNow = true;
             this.killViking();
             this.oneShot = 0;
-        }
-    }
+        };
+    };
     spatialManager.register(this);
 };
 
 
 Medusa.prototype.killViking = function () {
     if(this.oneShot ===1)entityManager.fireKillStare(this.cx, this.cy, this.direction);
-
 }
 
 // If medusa sees the viking it gets angry
@@ -104,13 +102,11 @@ Medusa.prototype.seesViking = function(vikingCx, vikingCy) {
     var VikingUp = vikingCy -32;
     var VikingDown = vikingCy + 32;
 
-
     if (vikingCx === this.cx && vikingCy< this.cy){
         this.angry =1;
         this.direction = 'up';
     } 
-    else if (vikingCx === this.cx && vikingCy> this.cy)
-    {
+    else if (vikingCx === this.cx && vikingCy> this.cy){
         this.angry =2;
         this.direction = 'down';
     } 
@@ -126,7 +122,6 @@ Medusa.prototype.seesViking = function(vikingCx, vikingCy) {
     else if ((VikingToTheRight >= this.cx) && (VikingToTheLeft<= this.cx) || (VikingUp <= this.cy) && (VikingDown >= this.cy))  {
         this.angry = 5;
     }    
-
     else {
         this.angry =0;
     }
@@ -142,14 +137,12 @@ Medusa.prototype.render = function (ctx) {
         var sprite_base = g_sprites.explode;
         if(this._animation.Frame > 9) {
             this.killAllMedusa = true;
-
-        }
+        };
         this.currentSprite = sprite_base[this._animation.Frame];
         this._animation.Frame +=1;
-    }
+    };
     var origScale = 1;
     this.currentSprite.scale = 1;
     this.currentSprite.drawCentredAt(ctx,this.cx,this.cy, this.rotation);
     this.currentSprite.scale = origScale;
-
 };

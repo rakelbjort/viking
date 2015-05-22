@@ -2,7 +2,7 @@
 function Background(descr) {
     for (var property in descr) {
         this[property] = descr[property];
-    }
+    };
     
 };
 
@@ -19,10 +19,10 @@ Background.prototype.collectTreasure = function (cx,cy) {
                 topRightCy = this.yBase + (this.cellHeight*bx);
                 if(cy === topRightCy && cx === topRightCx) {
                     return 1;
-                }   
-            }
-        }
-    }
+                };   
+            };
+        };
+    };
 }; 
 
 // Checks if viking is at the OPEN door (after treasure has been collected)
@@ -37,10 +37,10 @@ Background.prototype.goToOpenDoor = function (cx,cy) {
                 topRightCy = this.yBase + (this.cellHeight*bx);
                 if(cy === topRightCy && cx === topRightCx) {
                     return 1;
-                }   
-            }
-        }
-    }
+                };  
+            };
+        };
+    };
 }; 
 
 // ================
@@ -56,8 +56,8 @@ Background.prototype.countingHearts = function(){
         for(var by = 0; by < this.character[bx].length; by++) {
             if(this.character[bx][by]=== 'h') {
                 ++countingHeart;
-            }
-        }
-    }
+            };
+        };
+    };
     return countingHeart;
 };

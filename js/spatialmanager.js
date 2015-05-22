@@ -24,31 +24,20 @@ _nextSpatialID : 1, // make all valid IDs non-falsey (i.e. don't start at 0)
 
 _entities : [],
 
-// "PRIVATE" METHODS
-//
-// <none yet>
-
-
 // PUBLIC METHODS
 
 getNewSpatialID : function() {
-
     return this._nextSpatialID++;
-    // TODO: YOUR STUFF HERE!
-
 },
 
 register: function(entity) {
     var pos = entity.getPos();
     var spatialID = entity.getSpatialID();
-    
     this._entities[spatialID] = entity;
-    // TODO: YOUR STUFF HERE!
 },
 
 unregister: function(entity) {
     var spatialID = entity.getSpatialID();
-
     this._entities[spatialID] = undefined;
 
 },
@@ -68,10 +57,10 @@ findEntityInLineAbove : function (posX,posY){
     for(var ID in this._entities){
         if (this._entities[ID] != null){
             var e = this._entities[ID];
-                if ((e.cx === posX || (e.cx + e.sprite.height/2) === posX || (e.cx - e.sprite.height/2) === posX) 
-                    && e.cy < posY && e.canMedusaSeeThroughThis() === false){
-                        objects.push(e);
-                }  
+            if ((e.cx === posX || (e.cx + e.sprite.height/2) === posX || (e.cx - e.sprite.height/2) === posX) 
+                && e.cy < posY && e.canMedusaSeeThroughThis() === false){
+                    objects.push(e);
+            }  
         }
     }
 
@@ -92,12 +81,12 @@ findEntityInLineDown : function (posX,posY){
     for(var ID in this._entities){
         if (this._entities[ID] != null){
             var e = this._entities[ID];
-                if ((e.cx === posX ||  
-                    (e.cx + e.sprite.height/2) === posX ||
-                    (e.cx - e.sprite.height/2) === posX) && 
-                    e.cy > posY && e.canMedusaSeeThroughThis() === false){
-                        objects.push(e);
-                }  
+            if ((e.cx === posX ||  
+                (e.cx + e.sprite.height/2) === posX ||
+                (e.cx - e.sprite.height/2) === posX) && 
+                e.cy > posY && e.canMedusaSeeThroughThis() === false){
+                    objects.push(e);
+            }  
         }
     }
     for (var i = 0; i< objects.length; i++){
@@ -107,7 +96,6 @@ findEntityInLineDown : function (posX,posY){
         }
     }
     return shortestObject;
-
 },
 
 findEntityInSameLineRightForDragon : function (posX,posY){
@@ -117,10 +105,10 @@ findEntityInSameLineRightForDragon : function (posX,posY){
     for(var ID in this._entities){
         if (this._entities[ID] != null){
             var e = this._entities[ID];
-                if ((e.cy === posY )
-                    && e.cx > posX && e.canMedusaSeeThroughThis() === true){
-                    objects.push(e);
-                }  
+            if ((e.cy === posY )
+                && e.cx > posX && e.canMedusaSeeThroughThis() === true){
+                objects.push(e);
+            }  
         }
     }
     for (var i = 0; i< objects.length; i++){
@@ -141,10 +129,10 @@ findEntityInLineRight : function (posX,posY){
     for(var ID in this._entities){
         if (this._entities[ID] != null){
             var e = this._entities[ID];
-                if ((e.cy === posY || (e.cy + e.sprite.height/2) === posY || (e.cy - e.sprite.height/2) === posY) 
-                    && e.cx > posX && e.canMedusaSeeThroughThis() === false){
-                    objects.push(e);
-                }  
+            if ((e.cy === posY || (e.cy + e.sprite.height/2) === posY || (e.cy - e.sprite.height/2) === posY) 
+                && e.cx > posX && e.canMedusaSeeThroughThis() === false){
+                objects.push(e);
+            }  
         }
     }
     for (var i = 0; i< objects.length; i++){
@@ -164,10 +152,10 @@ findEntityInLineLeft : function (posX,posY){
     for(var ID in this._entities){
         if (this._entities[ID] != null){
             var e = this._entities[ID];
-                if ((e.cy === posY || (e.cy + e.sprite.height/2) === posY || (e.cy - e.sprite.height/2) === posY)  
-                    && e.cx < posX && e.canMedusaSeeThroughThis() === false){
-                        objects.push(e);
-                }  
+            if ((e.cy === posY || (e.cy + e.sprite.height/2) === posY || (e.cy - e.sprite.height/2) === posY)  
+                && e.cx < posX && e.canMedusaSeeThroughThis() === false){
+                    objects.push(e);
+            }  
         }
     }
     for (var i = 0; i< objects.length; i++){
@@ -196,7 +184,6 @@ findEntityInRange: function(posX, posY, radius) {
                 return e;
             }
         }
-
     }
 },
 }

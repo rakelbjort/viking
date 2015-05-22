@@ -22,13 +22,6 @@ functions... shared data properties are potentially quite confusing.
 */
 
 function Entity() {
-
-/*
-    // Diagnostics to check inheritance stuff
-    this._entityProperty = true;
-    console.dir(this);
-*/
-
 };
 
 Entity.prototype.setup = function (descr) {
@@ -96,15 +89,6 @@ Entity.prototype.findEntityInSameLineLeft = function(){
 };
 
 
-//----------------------------
-// Check for Dragon kill
-//----------------------------
-Entity.prototype.findEntityInSameLineRightForDragon = function(){
-    var pos = this.getPos();
-    return spatialManager.findEntityInSameLineRightForDragon(
-        pos.posX, pos.posY
-    );   
-};
 //-----------------------------
 // Collision Check
 //-----------------------------

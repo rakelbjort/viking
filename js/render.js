@@ -9,21 +9,11 @@ var g_doReset = false;
 
 var g_frameCounter = 1;
 
-// var TOGGLE_CLEAR = 'C'.charCodeAt(0);
-// var TOGGLE_BOX = 'B'.charCodeAt(0);
-// var TOGGLE_UNDO_BOX = 'U'.charCodeAt(0);
-// var TOGGLE_FLIPFLOP = 'F'.charCodeAt(0);
-// var TOGGLE_RENDER = 'R'.charCodeAt(0);
 var TOGGLE_RESET = '32';
 
 function render(ctx) {
     // Process various option toggles
-    //
-    // if (eatKey(TOGGLE_CLEAR)) g_doClear = !g_doClear;
-    // if (eatKey(TOGGLE_BOX)) g_doBox = !g_doBox;
-    // if (eatKey(TOGGLE_UNDO_BOX)) g_undoBox = !g_undoBox;
-    // if (eatKey(TOGGLE_FLIPFLOP)) g_doFlipFlop = !g_doFlipFlop;
-    // if (eatKey(TOGGLE_RENDER)) g_doRender = !g_doRender;
+
     if (key(TOGGLE_RESET)) g_doReset =! g_doReset;    
 
     if(g_doReset) {
@@ -40,21 +30,12 @@ function render(ctx) {
     // always deleted by the subsequent "undo" before you get to
     // see it...
     //
-    // i.e. double-buffering prevents flicker!
-    //
-    // if (g_doBox) fillBox(ctx, 200, 200, 50, 50, "red");
-    
     // The core rendering of the actual game / simulation
     //
     if (g_doRender) renderSimulation(ctx);
     
     //  renderPauseText can be found in utils.js
     //
-    if (g_isUpdatePaused) {
-        renderPauseText(ctx);
-    }
-
-
 
     // This flip-flip mechanism illustrates the pattern of alternation
     // between frames, which provides a crude illustration of whether

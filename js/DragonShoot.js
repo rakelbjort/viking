@@ -20,7 +20,6 @@ DragonShoot.prototype.velY = 10;
 DragonShoot.prototype.getRadius = function () {
     return (this.sprite.width / 4);
 };
-
 // If bullet hits something then "kill" the bullet
 DragonShoot.prototype.takeBulletHit = function(){
     this.kill();
@@ -47,20 +46,19 @@ DragonShoot.prototype.update = function (du) {
     if(this._isDeadNow || this.lifeSpan<0) return entityManager.KILL_ME_NOW;
     this.lifeSpan -= du;
     // direction of the bullet same direction as the Viking
-    // this.rotation +=1 * du;
     if (this.direction === 'right'){
         this.cx += this.velX * du;
-    }
+    };
     if (this.direction === 'left'){
         this.currentSprite = g_sprites.dragonBall_toTheLeft[0];
         this.cx -= this.velX * du
-    }
+    };
     if (this.direction === 'down'){
         this.cy += this.velY * du;
-    }
+    };
     if(this.direction === 'up'){
         this.cy -= this.velY * du;
-    }
+    };
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
         g_dragon_shoot.play();
@@ -69,7 +67,7 @@ DragonShoot.prototype.update = function (du) {
         if (canTakeHit) {
             // stop drawing the bullet if there is a hit!
             this.takeBulletHit();
-        } 
+        }; 
         var canTakeHit = hitEntity.isDead();
         if (canTakeHit) {
             hitEntity.changeSprite = true;
@@ -80,8 +78,8 @@ DragonShoot.prototype.update = function (du) {
             hitEntity._isDeadNow = true;
             hitEntity.isFrozen = true;
 
-        }
-    }
+        };
+    };
 
     spatialManager.register(this);
 };

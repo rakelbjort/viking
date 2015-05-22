@@ -163,10 +163,7 @@ killEverything : function(descr){
     spatialManager.unregister(this._door[0]);
     spatialManager.unregister(this._treasure_box[0]);
 
-
-
     this._viking.splice(0,this._viking.length);
-
     this._border.splice(0,this._border.length);
     this._tree.splice(0,this._tree.length);
     this._block.splice(0,this._block.length);
@@ -184,10 +181,6 @@ killEverything : function(descr){
     this._dragon.splice(0,this._dragon.length);
     this._dragonShoot.splice(0,this._dragonShoot.length);
     g_isUpdatePaused= false;
-    // spatialManager.unregister(this._mountain);
-    // spatialManager.unregister(this._water);
-
-
 },
 
 
@@ -207,25 +200,17 @@ update: function(du) {
                 //We're dealing with a medusa, check if he sees the viking
                 aCategory[i].seesViking(this._categories[13][0].cx,this._categories[13][0].cy);
             }
-
             //sheep
             if(c === 10){
                 if(this._categories[3][0].takeTreasure()){
                     aCategory[i].dissapear();
                 }
-                aCategory[i].positionOfViking(this._categories[13][0].cx,this._categories[13][0].cy);
-
                 if((this._categories[13][0].cx === aCategory[i].cx) && (this._categories[13][0].cy === aCategory[i].cy)){
                     aCategory[i].isCollidingWithViking = true;
-
                 }
                 else {
                     aCategory[i].isCollidingWithViking = false;
                 }
-
-
-                
-                // else aCategory[i].moveable = false;
                 //We're checking the direction which the sheep should me looking at
                 aCategory[i].lookingAtViking(this._categories[13][0].cx,this._categories[13][0].cy);
 

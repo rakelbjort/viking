@@ -137,13 +137,13 @@ Lundi.prototype.tryToGoLeft = function(prevX,prevY){
     this.itIsMoving = true;
     this.direction = 'left';
     // Check if it's hitting anything in the next step
-    this.collisionDetectionForObjects(this.cx - this.sizeOfSprite, this.cy)
+    this.collisionDetectionForObjects(this.cx - this.sizeOfSprite, this.cy);
     if(this.itIsMoving){
         this.destinationX = this.cx - this.sizeOfSprite;
         this.destinationY = null;
     }
     // If it's hitting something on the left then change direction
-    else this.direction = 'up'
+    else this.direction = 'up';
     return this.direction;
 };
 
@@ -151,13 +151,13 @@ Lundi.prototype.tryGoRight = function(prevX,prevY){
     this.itIsMoving = true;
     this.direction = 'right';
     // Check if it's hitting anything in the next step
-    this.collisionDetectionForObjects(this.cx + this.sizeOfSprite, this.cy)
+    this.collisionDetectionForObjects(this.cx + this.sizeOfSprite, this.cy);
     if(this.itIsMoving){
         this.destinationX = this.cx + this.sizeOfSprite;
         this.destinationY= null;
     }
     // If it's hitting something on the right then change direction
-    else this.direction = 'down'
+    else this.direction = 'down';
     return this.direction;
 
 };
@@ -165,13 +165,13 @@ Lundi.prototype.tryGoUp = function (prevX,prevY){
     this.itIsMoving = true;
     this.direction = 'up';
      // Check if it's hitting anything in the next step
-    this.collisionDetectionForObjects(this.cx, this.cy - this.sizeOfSprite)
+    this.collisionDetectionForObjects(this.cx, this.cy - this.sizeOfSprite);
     if(this.itIsMoving){
         this.destinationX= null;
         this.destinationY = this.cy - this.sizeOfSprite;
     }
     // If it's hitting something on top then change direction
-    else this.direction = 'right'
+    else this.direction = 'right';
     return this.direction;
 
 };
@@ -185,7 +185,7 @@ Lundi.prototype.tryGoDown = function(prevX,prevY){
         this.destinationY = this.cy + this.sizeOfSprite;
     }
     // If it's hitting something on the bottom then change direction
-    else this.direction = 'left'
+    else this.direction = 'left';
     return this.direction;
 
 };
@@ -234,8 +234,8 @@ Lundi.prototype.collisionDetectionForObjects = function(cx,cy){
         var isViking = entityInSpace.isDead();
         if(isViking){
             this.isSleeping  = true;
-        }
-    }
+        };
+    };
 };
 
 Lundi.prototype.computeSubStep = function (du){
@@ -248,7 +248,7 @@ Lundi.prototype.computeSubStep = function (du){
             this.whichSprite();
             this._animation.Ticker = -0.5;
         }
-    }
+    };
     if(this.isSleeping){
         if(this._animation.Ticker <= Math.abs(this.NOMINALS.ANIM_FRAME_RATE)){
             this._animation.Ticker +=du;
@@ -257,7 +257,7 @@ Lundi.prototype.computeSubStep = function (du){
             this.whichSprite();
             this._animation.Ticker = -5;
         }
-    }
+    };
     if(this.explodeLundi){
         if(this._animation.Ticker <= Math.abs(this.NOMINALS.ANIM_FRAME_RATE)){
             this._animation.Ticker +=du;
@@ -266,7 +266,7 @@ Lundi.prototype.computeSubStep = function (du){
             this.whichSprite();
             this._animation.Ticker = 0;
         }
-    }
+    };
 };
 
 //===============
@@ -327,4 +327,3 @@ Lundi.prototype.whichSprite = function (){
     this.currentSprite = sprite_base[this._animation.Frame];
     this._animation.Frame +=1;
 };
-
